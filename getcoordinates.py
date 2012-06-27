@@ -20,9 +20,11 @@ def getcoordinates(path,sample):
             if(arr[r][c] > 0):
                 arr[r][c] = 255
             else:
-                listOfBoxes.append(addBoxtoList(r, c, arr,sample,feature))
+                v=addBoxtoList(r, c, arr,sample,feature)
+                if v:
+                    listOfBoxes.append(v)
                 arr[r][c] = 0
-    return ListOfBoxes
+    return listOfBoxes
                 
 def addBoxtoList(r, c, arr,sample,feature): # get coordinates of top left corner, and array from calling function
     if(r-1 > 0 ):

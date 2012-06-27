@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import Image
 import numpy as np
+from scipy.misc import imread
 tab='\t'
 
 BLUE = 0

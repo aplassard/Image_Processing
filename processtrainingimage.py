@@ -5,6 +5,7 @@ import Image
 import numpy as np
 import getcoordinates
 import imageTransforms
+from calculateFeatures import calculatefeatures
 
 def process(line):
     line = line.strip().split(tab)
@@ -12,50 +13,61 @@ def process(line):
     image=line[0]
     featureimages=line[2:]
     img=Image.open(image)
-    images=imageTransfroms.normalizeImage(img) #Arjun's thing
+    images=imageTransforms.normalizeImage(img) #Arjun's thing
     features=[]
     featurecoordinates=[]
     labels=[]
     for j in xrange(len(featureimages)):
         inf = featureimages[j].split('.')
-        features.append(inf[1])
         c=getcoordinates.getcoordinates(featureimages[j],sample)
-        featurecoordinates.append(c)
+        for i in xrange(len(c)):
+            featurecoordinates.append(c[i])
         del c
     for j in xrange(len(featurecoordinates)):
-        features.append(runtraininganalysis(images[RGB],featurecoordinates[j]))
-        labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
-        labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
-        labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
-        labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
+        print "Now on " +str(j) + " out of " + str(len(featurecoordinates))
+        newfeature=runtraininganalysis(images[RGB],featurecoordinates[j])
+        if newfeature:
+            for i in xrange(len(newfeature)):
+                features.append(newfeature[i])
+            labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
+            labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
+            labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
+            labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
+    return labels,features
         
 def runtraininganalysis(arr,coor):
     left=coor[1]
     right=coor[3]
     top=coor[0]
     bottom=coor[2]
-    image=arr[top:bottom][left:right][:]
-    image=arrayToImage(image)
-    g=imageTransforms.gaussblur(image)
-    gauss={}
-    gauss[RGB]=Imagetoarray(g)
-    gauss[grayscale]=imagetoarray(imageTransforms.grayScale(g))
-    del g
     features=[]
-    features.append(calculatefeatures(gauss))
-    s=imageTransfroms.smooth(image)
-    smooth={}
-    smooth[RGB]=Imagetoarray(s)
-    smooth[grayscale]=Imagetoarray(imageTransforms.grayScale(s))
-    features.append(calculatefeatures(smooth))
-    del s
-    s=imageTransfroms.sharpen(image)
-    sharpen={}
-    sharpen[RGB]=Imagetoarray(s)
-    sharpen[grayscale]=Imagetoarray(imageTransforms.grayScale(s))
-    features.append(calculatefeatures(sharpen))
-    normal={}
-    normal[RGB]=Imagetoarray(image)
-    normal[grayscale]=imageTransforms.grayScale(image)
-    features.append(calculatefeatures(normal))
-    return features
+    print top,bottom,left,right
+    if bottom-top>4 and right-left>4:
+        image=arr[top:bottom,left:right]
+        image=arrayToImage(image)
+        g=imageTransforms.gaussblur(image)
+        gauss={}
+        gauss[RGB]=Imagetoarray(g)
+        gauss[grayscale]=Imagetoarray(imageTransforms.grayScale(g))
+        del g
+        features.append(calculatefeatures(gauss))
+        s=imageTransforms.smooth(image)
+        smooth={}
+        smooth[RGB]=Imagetoarray(s)
+        smooth[grayscale]=Imagetoarray(imageTransforms.grayScale(s))
+        features.append(calculatefeatures(smooth))
+        del s
+        s=imageTransforms.sharpen(image)
+        sharpen={}
+        sharpen[RGB]=Imagetoarray(s)
+        sharpen[grayscale]=Imagetoarray(imageTransforms.grayScale(s))
+        features.append(calculatefeatures(sharpen))
+        normal={}
+        normal[RGB]=Imagetoarray(image)
+        normal[grayscale]=Imagetoarray(imageTransforms.grayScale(image))
+        features.append(calculatefeatures(normal))
+    if features:
+        return features
+    else:
+        print "returning none"
+        return None

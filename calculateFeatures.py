@@ -1,5 +1,6 @@
 from numpy import *
-
+from common import *
+import mahotas
 #takes in an image array. color or grayscale. for each channel in the array it 
 # calculates the mean and std dev, and returns it in a list
 #returns list[]
@@ -24,7 +25,23 @@ def getAxisRatios(imageArray):
 
 
 def HaralickFeatures(arr):
-    if len(arr.shape)==2:
-        return mahotas.features.texture.haralick(arr,compute_th_feature=True)
-    else: print "Error image must be grayscale"
-    return
+	if len(arr.shape)==2:
+		return mahotas.features.texture.haralick(arr,compute_14th_feature=True)
+	else: print "Error image must be grayscale"
+	return
+
+def flattenHaralick(arr):
+	o=[]
+	for i in xrange(arr.shape[0]):
+		for j in xrange(arr.shape[1]):
+			o.append(arr[i][j])
+	return o
+
+def calculatefeatures(dictionary):
+	vector=[]
+	H=HaralickFeatures(dictionary[grayscale])
+	H = flattenHaralick(H)
+	for i in xrange(len(H)):
+		vector.append(H[i])
+	
+	return vector

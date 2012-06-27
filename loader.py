@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import common
+from common import *
 
 def getimagelists(filename):
     f = open(filename,'r')
