@@ -11,13 +11,17 @@ def process(line):
     image=line[0]
     featureimages=line[2:]
     img=Image.open(image)
-    normimg=normalize(img) #Arjun's thing
+    images=getimagedict(img) #Arjun's thing
     features=[]
     featurecoordinates=[]
-    for j in range(len(featureimages)):
+    labels=
+    for j in xrange(len(featureimages)):
         inf = featureimages[j].split('.')
         features.append(inf[1])
         c=getcoordinates.getcoordinates(featureimages[j],sample)
         featurecoordinates.append(c)
         del c
-    
+    for j in xrange(len(featurecoordinates)):
+        features.append(runtraininganalysis(images[RGB],featurecoordinates[j]))
+        
+def runtraininganalysis(arr,coord)

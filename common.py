@@ -17,3 +17,7 @@ def Imagetoarray(img):
 def getImageAsArray(path):
     return np.array(imread(path).astype(float))
     
+grayscale='grayscale'
+gradient='gradient'
+RGB='RGB'
+fftimage='fftimage'
