@@ -25,6 +25,9 @@ def process(line):
     for j in xrange(len(featurecoordinates)):
         features.append(runtraininganalysis(images[RGB],featurecoordinates[j]))
         labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
+        labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
+        labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
+        labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
         
 def runtraininganalysis(arr,coor):
     left=coor[1]
@@ -33,4 +36,26 @@ def runtraininganalysis(arr,coor):
     bottom=coor[2]
     image=arr[top:bottom][left:right][:]
     image=arrayToImage(image)
-    
+    g=imageTransforms.gaussblur(image)
+    gauss={}
+    gauss[RGB]=Imagetoarray(g)
+    gauss[grayscale]=imagetoarray(imageTransforms.grayScale(g))
+    del g
+    features=[]
+    features.append(calculatefeatures(gauss))
+    s=imageTransfroms.smooth(image)
+    smooth={}
+    smooth[RGB]=Imagetoarray(s)
+    smooth[grayscale]=Imagetoarray(imageTransforms.grayScale(s))
+    features.append(calculatefeatures(smooth))
+    del s
+    s=imageTransfroms.sharpen(image)
+    sharpen={}
+    sharpen[RGB]=Imagetoarray(s)
+    sharpen[grayscale]=Imagetoarray(imageTransforms.grayScale(s))
+    features.append(calculatefeatures(sharpen))
+    normal={}
+    normal[RGB]=Imagetoarray(image)
+    normal[grayscale]=imageTransforms.grayScale(image)
+    features.append(calculatefeatures(normal))
+    return features

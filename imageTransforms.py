@@ -14,7 +14,7 @@ def smooth(image):
 	im2=image.filter(ImageFilter.SMOOTH)
 	return im2
 
-def sharp(image):
+def sharpen(image):
 	im2=image.filter(ImageFilter.SHARPEN)
 	return im2
 
@@ -44,6 +44,8 @@ def normalizeImage(image):
 	imTemp=histNorm(imTemp)
 	imGray=grayScale(imTemp)
 	d={}
+	imTemp=Imagetoarray(imTemp)
+	imGray=Imagetoarray(imGray)
 	d[RGB]=imTemp
 	d[grayscale]=imGray
 	return d
