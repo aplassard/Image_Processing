@@ -32,3 +32,5 @@ def HaralickFeatures(arr):
         return mahotas.features.texture.haralick(arr,compute_th_feature=True)
     else: print "Error image must be grayscale"
     return
+
+
