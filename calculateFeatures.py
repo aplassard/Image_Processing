@@ -23,3 +23,8 @@ def getAxisRatios(imageArray):
 	return ratio
 
 
+def HaralickFeatures(arr):
+    if len(arr.shape)==2:
+        return mahotas.features.texture.haralick(arr,compute_th_feature=True)
+    else: print "Error image must be grayscale"
+    return
