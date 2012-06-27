@@ -4,6 +4,7 @@ from common import *
 import Image
 import numpy as np
 import getcoordinates
+import imageTransforms
 
 def process(line):
     line = line.strip().split(tab)
@@ -11,10 +12,10 @@ def process(line):
     image=line[0]
     featureimages=line[2:]
     img=Image.open(image)
-    images=getimagedict(img) #Arjun's thing
+    images=imageTransfroms.normalizeImage(img) #Arjun's thing
     features=[]
     featurecoordinates=[]
-    labels=
+    labels=[]
     for j in xrange(len(featureimages)):
         inf = featureimages[j].split('.')
         features.append(inf[1])
@@ -23,5 +24,12 @@ def process(line):
         del c
     for j in xrange(len(featurecoordinates)):
         features.append(runtraininganalysis(images[RGB],featurecoordinates[j]))
+        labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
         
-def runtraininganalysis(arr,coord)
+def runtraininganalysis(arr,coor):
+    left=coor[1]
+    right=coor[3]
+    top=coor[0]
+    bottom=coor[2]
+    image=arr[top:bottom][left:right][:]
+    image=arrayToImage(image)

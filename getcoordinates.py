@@ -54,7 +54,7 @@ def addBoxtoList(r, c, arr,sample,feature): # get coordinates of top left corner
         temp.append(brc)
         temp.append(sample)
         temp.append(feature)
-        listOfBoxes.append(temp)
+        return temp
         
 def getCorners(r, c, arr):
     posX=0
