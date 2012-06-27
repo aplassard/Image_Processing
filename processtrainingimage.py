@@ -33,3 +33,4 @@ def runtraininganalysis(arr,coor):
     bottom=coor[2]
     image=arr[top:bottom][left:right][:]
     image=arrayToImage(image)
+    
