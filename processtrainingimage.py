@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from common import *
-from scipy.misc import imread,imsave
 import Image
 import numpy as np
 import getcoordinates
