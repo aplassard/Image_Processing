@@ -34,11 +34,11 @@ def grayScale(image):
 	im2=ImageOps.grayscale(image)
 	return im2
 
-def contour(image)
+def contour(image):
 	im2=image.filter(ImageFilter.CONTOUR)
 	return im2
 
-def normalizeImage(image)
+def normalizeImage(image):
 	im=image
 	imTemp=minFilter(im)
 	imTemp=histNorm(imTemp)
