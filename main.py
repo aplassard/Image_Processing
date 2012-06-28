@@ -28,19 +28,5 @@ def run(filename):
         o.write(output+'\n')
     print "Converting nested list to array"
     features=np.array(features)
-    print "Running Machine Learning"
-    l = basicrunSVM(labels,features,features)
-    correct=0
-    print features[0:3,0:3]
-    for i in range(len(l)):
-        if l[i]==labels[i]: correct+=1
-    print "The number correctly identified was: " + str(correct) +"/" + str(len(l)) + " for a total of " + str(100*float(correct)/float(len(l))) + "% correct before normalization!"
-    features=normalizearray(features)
-    print "Running Machine Learning with normalized values"
-    l = basicrunSVM(labels,features,features)
-    correct=0
-    for i in range(len(l)):
-        if l[i]==labels[i]: correct+=1
-    print "The number correctly identified was: " + str(correct) +"/" + str(len(l)) + " for a total of " + str(100*float(correct)/float(len(l))) + "% correct after normalization!"
 if __name__ == '__main__':
     run(sys.argv[1])
