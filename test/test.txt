@@ -1,1 +1,1 @@
-test.tif	wt	test.astrocyte.tif
+test.tif	wt	test.astrocyte.tif	test.neuron.tif	test.vacuole.tif	test.brainmatter.tif

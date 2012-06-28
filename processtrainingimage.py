@@ -18,13 +18,11 @@ def process(line):
     featurecoordinates=[]
     labels=[]
     for j in xrange(len(featureimages)):
-        inf = featureimages[j].split('.')
         c=getcoordinates.getcoordinates(featureimages[j],sample)
         for i in xrange(len(c)):
             featurecoordinates.append(c[i])
         del c
     for j in xrange(len(featurecoordinates)):
-        print "Now on " +str(j) + " out of " + str(len(featurecoordinates))
         newfeature=runtraininganalysis(images[RGB],featurecoordinates[j])
         if newfeature:
             for i in xrange(len(newfeature)):
@@ -41,7 +39,6 @@ def runtraininganalysis(arr,coor):
     top=coor[0]
     bottom=coor[2]
     features=[]
-    print top,bottom,left,right
     if bottom-top>4 and right-left>4:
         image=arr[top:bottom,left:right]
         image=arrayToImage(image)
@@ -69,5 +66,4 @@ def runtraininganalysis(arr,coor):
     if features:
         return features
     else:
-        print "returning none"
         return None

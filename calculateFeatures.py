@@ -37,11 +37,17 @@ def flattenHaralick(arr):
 			o.append(arr[i][j])
 	return o
 
+def tasfeatures(arr):
+	return list(mahotas.features.tas(arr))
+
 def calculatefeatures(dictionary):
 	vector=[]
 	H=HaralickFeatures(dictionary[grayscale])
 	H = flattenHaralick(H)
-	for i in xrange(len(H)):
-		vector.append(H[i])
-	
+	vector.extend(H)
+	del H
+	T=tasfeatures(dictionary[grayscale])
+	vector.extend(T)
+	del T
 	return vector
+	

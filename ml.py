@@ -4,7 +4,7 @@ import milk
 import numpy as np
 
 
-def basidrunSVM(traininglabels,trainingfeatures,testfeatures):
+def basicrunSVM(traininglabels,trainingfeatures,testfeatures):
     classifier=milk.defaultclassifier()
     model = classifier.train(trainingfeatures,traininglabels)
     labels=[]
@@ -17,3 +17,24 @@ def buildSVMmodel(traininglabels,trainingfeatures):
     model = classifier.train(trainingfeatures,traininglabels)
     return model
 
+def normalizearray(arr):
+    for i in xrange(arr.shape[1]):
+        v=getZScore(arr[:,i])
+        for j in xrange(arr[:,i].shape[0]):
+            arr[j,i]=v[j]
+    return arr
+
+def naivenormalizevector(vector):
+    m = float(vector.max())
+    if m>0:
+        for i in xrange(vector.shape[0]):
+            vector[i]/=m
+    return vector
+
+def getZScore(vector):
+    s=vector.std()
+    print s
+    if s>0:
+        m=vector.mean()
+        return (vector-m)/s
+    else: return vector
