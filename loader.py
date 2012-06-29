@@ -10,7 +10,7 @@ def getimagelists(filename):
         if line:
             if len(line.split(tab))==2:
                 test.append(line)
-            else:
+            elif len(line.split(tab))>2:
                 training.append(line)
                 
     return training,test

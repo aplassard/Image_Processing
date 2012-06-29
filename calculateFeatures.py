@@ -1,7 +1,7 @@
 from numpy import *
 from common import *
 import mahotas
-from basicinfo import getColorInfo
+from basicInfo import getColorInfo
 #takes in an image array. color or grayscale. for each channel in the array it 
 # calculates the mean and std dev, and returns it in a list
 #returns list[]
@@ -46,23 +46,23 @@ def calculatefeatures(dictionary):
 	H=HaralickFeatures(dictionary[grayscale])
 	H = flattenHaralick(H)
 	vector.extend(H)
-	H=HaralickFeatures(dictionary[RGB](:,:,GREEN))
+	H=HaralickFeatures(dictionary[RGB][:,:,GREEN])
 	H = flattenHaralick(H)
 	vector.extend(H)
-	H=HaralickFeatures(dictionary[RGB](:,:,RED))
+	H=HaralickFeatures(dictionary[RGB][:,:,RED])
 	H = flattenHaralick(H)
 	vector.extend(H)
-	H=HaralickFeatures(dictionary[RGB](:,:,BLUE))
+	H=HaralickFeatures(dictionary[RGB][:,:,BLUE])
 	H = flattenHaralick(H)
 	vector.extend(H)
 	del H
 	T=tasfeatures(dictionary[grayscale])
 	vector.extend(T)
-	T=tasfeatures(dictionary[RGB](:,:,GREEN))
+	T=tasfeatures(dictionary[RGB][:,:,GREEN])
 	vector.extend(T)
-	T=tasfeatures(dictionary[RGB](:,:,RED))
+	T=tasfeatures(dictionary[RGB][:,:,RED])
 	vector.extend(T)
-	T=tasfeatures(dictionary[RGB](:,:,BLUE))
+	T=tasfeatures(dictionary[RGB][:,:,BLUE])
 	vector.extend(T)
 	del T
 	C=getColorInfo(dictionary[RGB])

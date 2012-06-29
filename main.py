@@ -14,6 +14,7 @@ def run(filename):
     labels=[]
     print "Processing files"
     for line in training:
+        print "Processing file: " + line.split(tab)[0]
         l,f=processtrainingimage.process(line)
         for i in range(len(f)):
             features.append(f[i])

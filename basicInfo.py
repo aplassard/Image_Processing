@@ -5,7 +5,7 @@ from numpy import *
 def getColorInfo(imageArray):
 	colorList=[]
 	for channel in xrange(imageArray.shape[2]):
-		im=image[:,:,channel]
+		im=imageArray[:,:,channel]
 		m=mean(im)
 		s=std(im)
 		colorList.append(m)
