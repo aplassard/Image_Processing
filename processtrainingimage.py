@@ -7,7 +7,7 @@ import getcoordinates
 import imageTransforms
 from calculateFeatures import calculatefeatures
 
-def process(line):
+def process(line,d):
     line = line.strip().split(tab)
     sample=line[1]
     image=line[0]
@@ -23,6 +23,10 @@ def process(line):
             featurecoordinates.append(c[i])
         del c
     for j in xrange(len(featurecoordinates)):
+        a=d.get(featurecoordinates[j][5],0)
+        m=max([a,featurecoordinates[j][2]-featurecoordinates[j][0],featurecoordinates[j][3]-featurecoordinates[j][1]])
+        d[featurecoordinates[j][5]]=m
+    for j in xrange(len(featurecoordinates)):
         newfeature=runtraininganalysis(images[RGB],featurecoordinates[j])
         if newfeature:
             for i in xrange(len(newfeature)):
@@ -31,7 +35,7 @@ def process(line):
             labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
             labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
             labels.append(featurecoordinates[j][4]+"_"+featurecoordinates[j][5])
-    return labels,features
+    return labels,features,d
         
 def runtraininganalysis(arr,coor):
     left=coor[1]

@@ -12,10 +12,10 @@ def run(filename):
     training,test=getimagelists(filename)
     features=[]
     labels=[]
-    print "Processing files"
+    d={}
     for line in training:
         print "Processing file: " + line.split(tab)[0]
-        l,f=processtrainingimage.process(line)
+        l,f,d=processtrainingimage.process(line,d)
         for i in range(len(f)):
             features.append(f[i])
         for i in range(len(l)):
