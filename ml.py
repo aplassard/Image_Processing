@@ -47,3 +47,7 @@ def buildKNN(labels,features):
 
 def getK(KNN,vector,n=5):
     return KNN.knn(vector,n)
+    
+def buildLearners(labels,features):
+    KNN=buildKNN(labels,features)
+    return KNN
