@@ -36,7 +36,7 @@ def run(filename):
     for line in test:
         print "Processing file: " + line.split(tab)[0]
         for key in d.keys():
-            ProcessTest.runtrainingimage(line,d[key],model,ldict)
+            ProcessTest.runtrainingimage(line,d[key],model[KNN],ldict)
             
 if __name__ == '__main__':
     run(sys.argv[1])
