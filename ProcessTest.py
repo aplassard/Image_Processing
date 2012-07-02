@@ -8,9 +8,9 @@ from common import *
 import imageTransforms
 import sys
 
-def getWalkerParameters(arr,size):
+def getWalkerParameters(arr,size,factor=4):
     s=arr.shape
-    step=size/4
+    step=size/factor
     y=xrange(0,s[0],step)
     x=xrange(0,s[1],step)
     return x,y,step
@@ -29,20 +29,21 @@ def runtrainingimage(path,size,model,d):
     print "started walking"
     z={}
     for key in d.keys():
+        print key,d[key]
         z[key]=np.zeros_like(images[grayscale])
     for i in x:
         for j in y:
             f=calculatefeatures(images,left=i,right=i+size,top=j,bottom=j+size)
             try:
-                u=ml.getK(model,f)[0]
-                print d[u]," left: ",i," right: ",i+size," top: ",j," bottom: ", j+size
+                u=ml.getK(model,f)
+                print d[u[0]]," left: ",i," right: ",i+size," top: ",j," bottom: ", j+size
                 for q in xrange(size):
                     for w in xrange(size):
-                        z[u][q,w]+=1
+                        z[u[0]][q,w]+=10
             except KeyError:
                 print "key error!"," left: ",i," right: ",i+size," top: ",j," bottom: ", j+size
     for key in z.keys():
-        imsave(key+'.tif',z[key])
+        print d[key],z[key].max()
     
     
 def test(featuresfile,img):
@@ -58,7 +59,7 @@ def test(featuresfile,img):
     features=np.array(features).astype('float64')
     model,ldict=ml.buildLearners(labels,features)
     g=flipdict(ldict)
-    runtrainingimage(img,80,model,g)
+    runtrainingimage(img,80,model[KNN],g)
     
 
 def flipdict(d):

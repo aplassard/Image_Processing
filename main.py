@@ -30,6 +30,7 @@ def run(filename):
         o.write(output+'\n')
     print "Converting nested list to array"
     features=np.array(features)
+    features=ml.normalizearray(features)
     print "Building Machine Learning Models"
     model,ldict=ml.buildLearners(labels,features)
     print "Starting Testing Images!"
