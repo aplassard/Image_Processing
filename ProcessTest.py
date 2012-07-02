@@ -27,10 +27,22 @@ def runtrainingimage(path,size,model,d):
     images=imageTransforms.normalizeImage(img) #Arjun's thing
     x,y,step=getWalkerParameters(images[grayscale],size)
     print "started walking"
+    z={}
+    for key in d.keys():
+        z[key]=np.zeros_like(images[grayscale])
     for i in x:
         for j in y:
             f=calculatefeatures(images,left=i,right=i+size,top=j,bottom=j+size)
-            print d[ml.getK(model,f)[0]]," left: ",i," right: ",i+size," top: ",j," bottom: ", j+size
+            try:
+                u=ml.getK(model,f)[0]
+                print d[u]," left: ",i," right: ",i+size," top: ",j," bottom: ", j+size
+                for q in xrange(size):
+                    for w in xrange(size):
+                        z[u][q,w]+=1
+            except KeyError:
+                print "key error!"," left: ",i," right: ",i+size," top: ",j," bottom: ", j+size
+    for key in z.keys():
+        imsave(key+'.tif',z[key])
     
     
 def test(featuresfile,img):

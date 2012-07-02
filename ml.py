@@ -61,6 +61,10 @@ def buildLearners(labels,features):
             d[labels[i]]=n
             n+=1
             labels[i]=val
-    KNN=buildKNN(labels,features)
-    return KNN,d
+    KNearest=buildKNN(labels,features)
+    models={}
+    models[KNN]=KNearest
+    models[Neural]=buildNeural(labels,features)
+    models[SVM]=buildSVM(labels,features)
+    return models,d
 

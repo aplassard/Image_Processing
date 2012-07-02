@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import Image
 import numpy as np
-from scipy.misc import imread
+from scipy.misc import imread,imsave
 tab='\t'
 
 BLUE = 0
@@ -17,6 +17,9 @@ def Imagetoarray(img):
     
 def getImageAsArray(path):
     return np.array(imread(path).astype(float))
+    
+def savearray(arr,path):
+    imsave(path,arr)
     
 grayscale='grayscale'
 gradient='gradient'
