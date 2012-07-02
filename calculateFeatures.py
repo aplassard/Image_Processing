@@ -41,31 +41,31 @@ def flattenHaralick(arr):
 def tasfeatures(arr):
 	return list(mahotas.features.tas(arr))
 
-def calculatefeatures(dictionary):
+def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	vector=[]
-	H=HaralickFeatures(dictionary[grayscale])
+	H=HaralickFeatures(dictionary[grayscale][top:bottom,left:right])
 	H = flattenHaralick(H)
 	vector.extend(H)
-	H=HaralickFeatures(dictionary[RGB][:,:,GREEN])
+	H=HaralickFeatures(dictionary[RGB][top:bottom,left:right,GREEN])
 	H = flattenHaralick(H)
 	vector.extend(H)
-	H=HaralickFeatures(dictionary[RGB][:,:,RED])
+	H=HaralickFeatures(dictionary[RGB][top:bottom,left:right,RED])
 	H = flattenHaralick(H)
 	vector.extend(H)
-	H=HaralickFeatures(dictionary[RGB][:,:,BLUE])
+	H=HaralickFeatures(dictionary[RGB][top:bottom,left:right,BLUE])
 	H = flattenHaralick(H)
 	vector.extend(H)
 	del H
-	T=tasfeatures(dictionary[grayscale])
+	T=tasfeatures(dictionary[grayscale][top:bottom,left:right])
 	vector.extend(T)
-	T=tasfeatures(dictionary[RGB][:,:,GREEN])
+	T=tasfeatures(dictionary[RGB][top:bottom,left:right,GREEN])
 	vector.extend(T)
-	T=tasfeatures(dictionary[RGB][:,:,RED])
+	T=tasfeatures(dictionary[RGB][top:bottom,left:right,RED])
 	vector.extend(T)
-	T=tasfeatures(dictionary[RGB][:,:,BLUE])
+	T=tasfeatures(dictionary[RGB][top:bottom,left:right,BLUE])
 	vector.extend(T)
 	del T
-	C=getColorInfo(dictionary[RGB])
+	C=getColorInfo(dictionary[RGB][top:bottom,left:right])
 	vector.extend(C)
 	del C
 	return vector

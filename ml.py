@@ -3,6 +3,7 @@
 import milk
 import numpy as np
 from pybrain.supervised.knn.lsh.nearoptimal import MultiDimHash
+from pybrain.supervised.knn.lsh.minhash import MinHash
 
 def basicrunSVM(traininglabels,trainingfeatures,testfeatures):
     classifier=milk.defaultclassifier()
@@ -33,16 +34,15 @@ def naivenormalizevector(vector):
 
 def getZScore(vector):
     s=vector.std()
-    print s
     if s>0:
         m=vector.mean()
         return (vector-m)/s
     else: return vector
     
 def buildKNN(labels,features):
-    knnmodel=MultiDimHash.__init__(features.shape[1])
+    knnmodel=MinHash.__init__(features.shape[1],10)
     for i in xrange(features.shape[0]):
-        knnmodel.insert(features[i,:],labels(i))
+        knnmodel.put(features[i,:],labels(i))
     return knnmodel
 
 def getK(KNN,vector,n=5):

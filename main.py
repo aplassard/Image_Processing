@@ -4,8 +4,9 @@ from loader import getimagelists
 import processtrainingimage
 from common import *
 import sys
-from ml import basicrunSVM,normalizearray
+import ml
 import numpy as np
+import ProcessTest
 
 def run(filename):
     print "Reading File"
@@ -29,5 +30,12 @@ def run(filename):
         o.write(output+'\n')
     print "Converting nested list to array"
     features=np.array(features)
+    print "Building Machine Learning Models"
+    model=ml.buildKNN(labels,features)
+    print "Starting Testing Images!"
+    for line in test:
+        print "Processing file: " + line.split(tab)[0]
+        for key in d.keys():
+            ProcessTest.runtrainingimage(line,d[key],model)
 if __name__ == '__main__':
     run(sys.argv[1])
