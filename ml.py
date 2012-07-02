@@ -4,6 +4,8 @@ import milk
 import numpy as np
 from pybrain.supervised.knn.lsh.nearoptimal import MultiDimHash
 from pybrain.supervised.knn.lsh.minhash import MinHash
+from sklearn import neighbors
+
 
 def basicrunSVM(traininglabels,trainingfeatures,testfeatures):
     classifier=milk.defaultclassifier()
@@ -40,15 +42,25 @@ def getZScore(vector):
     else: return vector
     
 def buildKNN(labels,features):
-    knnmodel=MinHash.__init__(features.shape[1],10)
-    for i in xrange(features.shape[0]):
-        knnmodel.put(features[i,:],labels(i))
-    return knnmodel
+    knn = neighbors.KNeighborsClassifier()
+    knn.fit(features, labels)
+    return knn
 
 def getK(KNN,vector,n=5):
-    return KNN.knn(vector,n)
+    return KNN.predict(vector)
+    
     
 def buildLearners(labels,features):
+    d={}
+    n=0
+    for i in xrange(len(labels)):
+        val=d.get(labels[i])
+        if val:
+            labels[i]=val
+        else:
+            d[labels[i]]=n
+            n+=1
+            labels[i]=val
     KNN=buildKNN(labels,features)
-    return KNN
+    return KNN,d
 
