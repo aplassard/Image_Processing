@@ -6,6 +6,7 @@ from sklearn import neighbors,svm
 from common import *
 from pybrain.datasets import supervised
 import random
+from sklearn.metrics import roc_curve,auc
 
 def basicrunSVM(traininglabels,trainingfeatures,testfeatures):
     classifier=milk.defaultclassifier()
@@ -53,8 +54,30 @@ def buildKNN(labels,features):
 def getK(KNN,vector,n=5):
     return KNN.predict(vector)
     
-def buildSVM(labels,features):
-    pass
+def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None,testlabels=None,testfeatures=None):
+    if labels and features:
+        traininglabels=labels
+        testlabels=labels
+        trainingfeatures=features
+        testfeatures=features
+    elif traininglabels and trainingfeatures and testlabels and testfeatures:
+        pass
+    else:
+        print "Incorrect Usage!  Needs to have features and labels or traininfeatures,traininglabels,testfeatures, and testlabels!"
+        return
+    error=10000.0
+    model=None
+    
+    
+    
+def calculateSVMerror(model,testfeatures,testlabels):
+    n=0
+    for i in xrange(testfeatures.shape[0]):
+        a=model.predict(testfeatures[i,:])[0]
+        print a,testlabels[i]
+        if a==testlabels[i]:
+            n+=1
+    return float(n)/testfeatures.shape[0]
 
 def buildNeural(labels,features):
     pass
@@ -102,9 +125,9 @@ def splitTrainingTesting(arr,labels,percent=0.7):
         g=random.sample(range(len(templabels)),int(percent*float(len(templabels))))
         for j in range(len(templabels)):
             if g.count(j)>0:
-                trainingfeatures.append(tempfeatures[i])
-                traininglabels.append(templabels[i])
+                trainingfeatures.append(tempfeatures[j])
+                traininglabels.append(templabels[j])
             else:
-                testfeatures.append(tempfeatures[i])
-                testlabels.append(templabels[i])
+                testfeatures.append(tempfeatures[j])
+                testlabels.append(templabels[j])
     return np.array(testfeatures),testlabels,np.array(trainingfeatures),traininglabels
