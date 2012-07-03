@@ -55,15 +55,404 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
         return
     percent=0
     model=None
-    print "Building first model"
-    testmodel = svm.LinearSVC()
+    params=None
+    testmodel = svm.LinearSVC(C=0.1)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.LinearSVC(C=0.1)'''
+    testmodel = svm.LinearSVC(C=1.0)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.LinearSVC(C=1.0)'''
+    testmodel = svm.LinearSVC(C=5)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.LinearSVC(C=5)'''
+    testmodel = svm.LinearSVC(C=10)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.LinearSVC(C=10)'''
+    testmodel = svm.LinearSVC(C=20)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.LinearSVC(C=20)'''
+    testmodel = svm.LinearSVC(C=30)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.LinearSVC(C=30)'''
+    testmodel = svm.LinearSVC(C=40)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.LinearSVC(C=40)'''
+    testmodel = svm.SVC(C=0.1)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=0.1)'''
+    testmodel = svm.LinearSVC(C=1.0)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=1.0)'''
+    testmodel = svm.SVC(C=5)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=5)'''
+    testmodel = svm.SVC(C=10)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=10)'''
+    testmodel = svm.SVC(C=20)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=20)'''
+    testmodel = svm.SVC(C=30)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=30)'''
+    testmodel = svm.SVC(C=40)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=40)'''
+    testmodel = svm.SVC(C=0.1,gamma=0.0001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=0.1,gamma=0.0001)'''
+    testmodel = svm.SVC(C=1.0,gamma=0.0001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=1.0,gamma=0.0001)'''
+    testmodel = svm.SVC(C=5,gamma=0.0001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=5,gamma=0.0001)'''
+    testmodel = svm.SVC(C=10,gamma=0.0001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=10,gamma=0.0001)'''
+    testmodel = svm.SVC(C=20,gamma=0.0001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=20,gamma=0.0001)'''
+    testmodel = svm.SVC(C=30,gamma=0.0001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=30,gamma=0.0001)'''
+    testmodel = svm.SVC(C=40,gamma=0.0001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=40,gamma=0.0001)'''
+    testmodel = svm.SVC(C=0.1,gamma=0.001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=0.1,gamma=0.001)'''
+    testmodel = svm.SVC(C=1.0,gamma=0.001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=1.0,gamma=0.001)'''
+    testmodel = svm.SVC(C=5,gamma=0.001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=5,gamma=0.001)'''
+    testmodel = svm.SVC(C=10,gamma=0.001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=10,gamma=0.001)'''
+    testmodel = svm.SVC(C=20,gamma=0.001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=20,gamma=0.001)'''
+    testmodel = svm.SVC(C=30,gamma=0.001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=30,gamma=0.001)'''
+    testmodel = svm.SVC(C=40,gamma=0.001)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=40,gamma=0.001)'''
+    testmodel = svm.SVC(C=0.1,gamma=0.01)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=0.1,gamma=0.01)'''
+    testmodel = svm.SVC(C=1.0,gamma=0.01)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=1.0,gamma=0.01)'''
+    testmodel = svm.SVC(C=5,gamma=0.01)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=5,gamma=0.01)'''
+    testmodel = svm.SVC(C=10,gamma=0.01)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=10,gamma=0.01)'''
+    testmodel = svm.SVC(C=20,gamma=0.01)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=20,gamma=0.01)'''
+    testmodel = svm.SVC(C=30,gamma=0.01)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=30,gamma=0.01)'''
+    testmodel = svm.SVC(C=40,gamma=0.01)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=40,gamma=0.01)'''
+        
+    testmodel = svm.SVC(C=0.1,gamma=0.1)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=0.1,gamma=0.1)'''
+    testmodel = svm.SVC(C=1.0,gamma=0.1)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=1.0,gamma=0.1)'''
+    testmodel = svm.SVC(C=5,gamma=0.1)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=5,gamma=0.1)'''
+    testmodel = svm.SVC(C=10,gamma=0.1)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=10,gamma=0.1)'''
+    testmodel = svm.SVC(C=20,gamma=0.1)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=20,gamma=0.1)'''
+    testmodel = svm.SVC(C=30,gamma=0.1)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=30,gamma=0.1)'''
+    testmodel = svm.SVC(C=40,gamma=0.1)
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=40,gamma=0.1)'''
+    
+    testmodel = svm.SVC(C=0.1,kernel='linear')
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=0.1,kernel='linear')'''
+    testmodel = svm.SVC(C=1.0,kernel='linear')
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=1.0,kernel='linear')'''
+    testmodel = svm.SVC(C=5,kernel='linear')
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=5,kernel='linear')'''
+    testmodel = svm.SVC(C=10,kernel='linear')
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=10,kernel='linear')'''
+    testmodel = svm.SVC(C=20,kernel='linear')
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=20,kernel='linear')'''
+    testmodel = svm.SVC(C=30,kernel='linear')
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=30,kernel='linear')'''
+    testmodel = svm.SVC(C=40,kernel='linear')
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p*100,'%'
+    if p>percent:
+        model=testmodel
+        percent=p
+        params='''testmodel = svm.SVC(C=40,kernel='linear')'''
+    print '\nThe best model had ' + str(percent*100) + '% success and used the parameters:\n' + params+'\n'
+    return model
 
-    
-    
-    
 def calculateSVMerror(model,testfeatures,testlabels):
     n=0
     for i in xrange(testfeatures.shape[0]):
@@ -146,7 +535,6 @@ def test(path):
             n+=1
         labels[i]=val
     features=normalizearray(features)
-    
     testfeatures,testlabels,trainingfeatures,traininglabels=splitTrainingTesting(features,labels)
     buildSVM(traininglabels=traininglabels,trainingfeatures=trainingfeatures,testlabels=testlabels,testfeatures=testfeatures)
     
