@@ -1,25 +1,13 @@
 #!/usr/bin/env python
 
-import milk
 import numpy as np
-from sklearn import neighbors,svm
+from sklearn import svm, datasets,neighbors
+from sklearn.utils import shuffle
 from common import *
 from pybrain.datasets import supervised
 import random
 from sklearn.metrics import roc_curve,auc
-
-def basicrunSVM(traininglabels,trainingfeatures,testfeatures):
-    classifier=milk.defaultclassifier()
-    model = classifier.train(trainingfeatures,traininglabels)
-    labels=[]
-    for i in range(testfeatures.shape[0]):
-        labels.append(model.apply(testfeatures[i]))
-    return labels
-
-def buildSVMmodel(traininglabels,trainingfeatures):
-    classifier=milk.defaultclassifier()
-    model = classifier.train(trainingfeatures,traininglabels)
-    return model
+import sys
 
 def normalizearray(arr):
     m=[]
@@ -30,7 +18,7 @@ def normalizearray(arr):
             arr[j,i]=v[j]
         m.append(b)
         s.append(a)
-    return arr,m,s
+    return arr
 
 def naivenormalizevector(vector):
     m = float(vector.max())
@@ -60,13 +48,19 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
         testlabels=labels
         trainingfeatures=features
         testfeatures=features
-    elif traininglabels and trainingfeatures and testlabels and testfeatures:
+    elif traininglabels.any() and trainingfeatures.any() and testlabels.any() and testfeatures.any():
         pass
     else:
         print "Incorrect Usage!  Needs to have features and labels or traininfeatures,traininglabels,testfeatures, and testlabels!"
         return
-    error=10000.0
+    percent=0
     model=None
+    print "Building first model"
+    testmodel = svm.LinearSVC()
+    testmodel.fit(trainingfeatures,traininglabels)
+    p=calculateSVMerror(testmodel,testfeatures,testlabels)
+    print p
+
     
     
     
@@ -74,7 +68,6 @@ def calculateSVMerror(model,testfeatures,testlabels):
     n=0
     for i in xrange(testfeatures.shape[0]):
         a=model.predict(testfeatures[i,:])[0]
-        print a,testlabels[i]
         if a==testlabels[i]:
             n+=1
     return float(n)/testfeatures.shape[0]
@@ -130,4 +123,32 @@ def splitTrainingTesting(arr,labels,percent=0.7):
             else:
                 testfeatures.append(tempfeatures[j])
                 testlabels.append(templabels[j])
-    return np.array(testfeatures),testlabels,np.array(trainingfeatures),traininglabels
+    traininglabels=np.array(traininglabels).astype(float)
+    testlabels=np.array(testlabels).astype(float)
+    return np.array(testfeatures).astype(float),testlabels,np.array(trainingfeatures).astype(float),traininglabels
+
+def test(path):
+    f = open(path,'r')
+    labels=[]
+    features=[]
+    for line in f:
+        line = line.strip().split(tab)
+        labels.append(line[0])
+        features.append(line[1:])
+    features=np.array(features).astype(float)
+    d={}
+    n=0
+    for i in xrange(len(labels)):
+        val=d.get(labels[i])
+        if not val:
+            val = n
+            d[labels[i]]=n
+            n+=1
+        labels[i]=val
+    features=normalizearray(features)
+    
+    testfeatures,testlabels,trainingfeatures,traininglabels=splitTrainingTesting(features,labels)
+    buildSVM(traininglabels=traininglabels,trainingfeatures=trainingfeatures,testlabels=testlabels,testfeatures=testfeatures)
+    
+if __name__ == '__main__':
+    test(sys.argv[1])
