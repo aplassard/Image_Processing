@@ -18,7 +18,7 @@ def normalizearray(arr):
             arr[j,i]=v[j]
         m.append(b)
         s.append(a)
-    return arr
+    return arr,m,s
 
 def naivenormalizevector(vector):
     m = float(vector.max())
@@ -534,9 +534,33 @@ def test(path):
             d[labels[i]]=n
             n+=1
         labels[i]=val
-    features=normalizearray(features)
     testfeatures,testlabels,trainingfeatures,traininglabels=splitTrainingTesting(features,labels)
-    buildSVM(traininglabels=traininglabels,trainingfeatures=trainingfeatures,testlabels=testlabels,testfeatures=testfeatures)
+    ntestfeatures,m,s=normalizearray(testfeatures)
+    ntrainingfeatures=normalizearray(trainingfeatures)
+    SVMmodel=buildSVM(traininglabels=traininglabels,trainingfeatures=ntrainingfeatures,testlabels=testlabels,testfeatures=ntestfeatures)
+    KNNmodel=buildKNN(traininglabels,trainingfeatures)
+    knncorrect=0
+    svmcorrect=0
+    bothwrong=0
+    for i in xrange(traininglabels.shape[0]):
+        a=SVMmodel.predict(ntrainingfeatures[i,:])
+        b=getK(KNNmodel,trainingfeatures[i,:])
+        a=int(a[0])
+        b=int(b[0])
+        l=int(traininglabels[i])
+        if a==l:
+            svmcorrect+=1
+        if b==l:
+            knncorrect+=1
+        if a!=l and b!=l:
+            bothwrong+=1
+            print "flag",
+        if a!=l or b !=l:
+            print a,b,l
+    print "KNN got",knncorrect*100/traininglabels.shape[0],"% correct."
+    print "SVM got",svmcorrect*100/traininglabels.shape[0],"% correct."
+    print "There were",bothwrong,"cases where neither model was correct."
+    print "This accounted for",bothwrong*100/testlabels.shape[0],"% of the testing data."
     
 if __name__ == '__main__':
     test(sys.argv[1])
