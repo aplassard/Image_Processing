@@ -24,6 +24,7 @@ def getcoordinates(path,sample):
                 if v:
                     listOfBoxes.append(v)
                 arr[r][c] = 0
+    print "found ", len(listOfBoxes), " boxes"
     return listOfBoxes
                 
 def addBoxtoList(r, c, arr,sample,feature): # get coordinates of top left corner, and array from calling function
@@ -47,7 +48,12 @@ def addBoxtoList(r, c, arr,sample,feature): # get coordinates of top left corner
     else:
         oneRight=255
     
-    if( oneUp!=0 and oneLeft!=0 and oneDown==0 and oneRight==0):
+    if(c+1 < arr.shape[1] and r+1<arr.shape[0]):
+        rightDown=arr[r+1][c+1]
+    else:
+        rightDown=255
+    
+    if( oneUp!=0 and oneLeft!=0 and oneDown==0 and oneRight==0 and rightDown!=0):
         brr, brc=getCorners(r, c, arr)
         temp=[]
         temp.append(r)
