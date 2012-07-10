@@ -9,6 +9,11 @@ import random
 from sklearn.metrics import roc_curve,auc
 import sys
 
+def normalizeVector(vector,m,s):
+    for i in xrange(vector.shape[0]):
+        vector[i]=(vector[i]-m[i])/s[i]
+    return vector
+
 def normalizearray(arr):
     m=[]
     s=[]
@@ -42,6 +47,9 @@ def buildKNN(labels,features):
 def getK(KNN,vector,n=5):
     return KNN.predict(vector)
     
+def callSVM(model,vector):
+    return int(model.predict(vector)[0])
+    
 def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None,testlabels=None,testfeatures=None):
     if labels and features:
         traininglabels=labels
@@ -59,7 +67,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.LinearSVC(C=0.1)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -67,7 +75,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.LinearSVC(C=1.0)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -75,7 +83,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.LinearSVC(C=5)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -83,7 +91,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.LinearSVC(C=10)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -91,7 +99,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.LinearSVC(C=20)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -99,7 +107,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.LinearSVC(C=30)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -107,7 +115,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.LinearSVC(C=40)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -115,7 +123,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=0.1)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -123,7 +131,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.LinearSVC(C=1.0)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -131,7 +139,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=5)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -139,7 +147,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=10)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -147,7 +155,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=20)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -155,7 +163,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=30)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -163,7 +171,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=40)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -171,7 +179,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=0.1,gamma=0.0001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -179,7 +187,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=1.0,gamma=0.0001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -187,7 +195,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=5,gamma=0.0001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -195,7 +203,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=10,gamma=0.0001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -203,7 +211,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=20,gamma=0.0001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -211,7 +219,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=30,gamma=0.0001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -219,7 +227,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=40,gamma=0.0001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -227,7 +235,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=0.1,gamma=0.001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -235,7 +243,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=1.0,gamma=0.001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -243,7 +251,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=5,gamma=0.001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -251,7 +259,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=10,gamma=0.001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -259,7 +267,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=20,gamma=0.001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -267,7 +275,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=30,gamma=0.001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -275,7 +283,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=40,gamma=0.001)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -283,7 +291,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=0.1,gamma=0.01)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -291,7 +299,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=1.0,gamma=0.01)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -299,7 +307,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=5,gamma=0.01)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -307,7 +315,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=10,gamma=0.01)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -315,7 +323,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=20,gamma=0.01)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -323,7 +331,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=30,gamma=0.01)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -331,7 +339,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=40,gamma=0.01)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -340,7 +348,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=0.1,gamma=0.1)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -348,7 +356,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=1.0,gamma=0.1)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -356,7 +364,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=5,gamma=0.1)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -364,7 +372,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=10,gamma=0.1)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -372,7 +380,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=20,gamma=0.1)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -380,7 +388,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=30,gamma=0.1)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -388,7 +396,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=40,gamma=0.1)
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -397,7 +405,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=0.1,kernel='linear')
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -405,7 +413,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=1.0,kernel='linear')
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -413,7 +421,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=5,kernel='linear')
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -421,7 +429,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=10,kernel='linear')
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -429,7 +437,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=20,kernel='linear')
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -437,7 +445,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=30,kernel='linear')
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -445,7 +453,7 @@ def buildSVM(labels=None,features=None,traininglabels=None,trainingfeatures=None
     testmodel = svm.SVC(C=40,kernel='linear')
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
-    print p*100,'%'
+
     if p>percent:
         model=testmodel
         percent=p
@@ -477,10 +485,16 @@ def buildLearners(labels,features):
             n+=1
             labels[i]=val
     models={}
-    models[KNN]=buildKNN(labels,features)
+    labels=np.array(labels).astype(float)
+    testfeatures,testlabels,trainingfeatures,traininglabels=splitTrainingTesting(features,labels)
+    ntestfeatures,m1,s1=normalizearray(testfeatures)
+    ntrainingfeatures,m2,s2=normalizearray(trainingfeatures)
+    SVMmodel=buildSVM(traininglabels=traininglabels,trainingfeatures=ntrainingfeatures,testlabels=testlabels,testfeatures=ntestfeatures)
+    KNNmodel=buildKNN(traininglabels,trainingfeatures)
+    models[KNN]=KNNmodel
     models[Neural]=buildNeural(labels,features)
-    models[SVM]=buildSVM(labels,features)
-    return models,d
+    models[SVM]=SVMmodel
+    return models,d,m1,s1
 
 def getZ(vector,means,stds):
     for i in xrange(len(vector)):
@@ -536,7 +550,7 @@ def test(path):
         labels[i]=val
     testfeatures,testlabels,trainingfeatures,traininglabels=splitTrainingTesting(features,labels)
     ntestfeatures,m,s=normalizearray(testfeatures)
-    ntrainingfeatures=normalizearray(trainingfeatures)
+    ntrainingfeatures,m,s=normalizearray(trainingfeatures)
     SVMmodel=buildSVM(traininglabels=traininglabels,trainingfeatures=ntrainingfeatures,testlabels=testlabels,testfeatures=ntestfeatures)
     KNNmodel=buildKNN(traininglabels,trainingfeatures)
     knncorrect=0
@@ -554,9 +568,6 @@ def test(path):
             knncorrect+=1
         if a!=l and b!=l:
             bothwrong+=1
-            print "flag",
-        if a!=l or b !=l:
-            print a,b,l
     print "KNN got",knncorrect*100/traininglabels.shape[0],"% correct."
     print "SVM got",svmcorrect*100/traininglabels.shape[0],"% correct."
     print "There were",bothwrong,"cases where neither model was correct."

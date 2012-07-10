@@ -30,14 +30,13 @@ def run(filename):
         o.write(output+'\n')
     print "Converting nested list to array"
     features=np.array(features)
-    features=ml.normalizearray(features)
     print "Building Machine Learning Models"
-    model,ldict=ml.buildLearners(labels,features)
+    model,ldict,m,s=ml.buildLearners(labels,features)
     print "Starting Testing Images!"
     for line in test:
         print "Processing file: " + line.split(tab)[0]
         for key in d.keys():
-            ProcessTest.runtrainingimage(line,d[key],model[KNN],ldict)
+            ProcessTest.runtrainingimage(line,80,model,ldict,m,s)
             
 if __name__ == '__main__':
     run(sys.argv[1])

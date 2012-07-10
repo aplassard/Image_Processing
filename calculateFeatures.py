@@ -1,7 +1,7 @@
 from numpy import *
 from common import *
 import mahotas
-from basicInfo import getColorInfo
+from basicInfo import getColorInfo,analyseGradient
 #takes in an image array. color or grayscale. for each channel in the array it 
 # calculates the mean and std dev, and returns it in a list
 #returns list[]
@@ -66,6 +66,8 @@ def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	vector.extend(T)
 	del T
 	C=getColorInfo(dictionary[RGB][top:bottom,left:right])
+	vector.extend(C)
+	C=analyseGradient(dictionary)
 	vector.extend(C)
 	del C
 	return vector

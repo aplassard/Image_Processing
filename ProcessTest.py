@@ -7,6 +7,7 @@ from calculateFeatures import calculatefeatures
 from common import *
 import imageTransforms
 import sys
+import timeit
 
 def getWalkerParameters(arr,size,factor=4):
     s=arr.shape
@@ -19,7 +20,7 @@ def getWalkerParameters(arr,size,factor=4):
 def walkimage(params):
     pass
 
-def runtrainingimage(path,size,model,d):
+def runtrainingimage(path,size,model,d,m,s):
     line = path.strip().split(tab)
     sample=line[1]
     image=line[0]
@@ -31,17 +32,18 @@ def runtrainingimage(path,size,model,d):
     for key in d.keys():
         print key,d[key]
         z[key]=np.zeros_like(images[grayscale])
+    g=flipdict(d)
     for i in x:
         for j in y:
             f=calculatefeatures(images,left=i,right=i+size,top=j,bottom=j+size)
+            fn=ml.normalizeVector(np.array(f).astype(float),m,s)
+
             try:
-                u=ml.getK(model,f)
-                print d[u[0]]," left: ",i," right: ",i+size," top: ",j," bottom: ", j+size
-                for q in xrange(size):
-                    for w in xrange(size):
-                        z[u[0]][q,w]+=10
+                u=ml.getK(model[KNN],f)
+                y=ml.callSVM(model[SVM],fn)
+                print g[u[0]],g[y]," left: ",i," right: ",i+size," top: ",j," bottom: ", j+size
             except KeyError:
-                print "key error!"," left: ",i," right: ",i+size," top: ",j," bottom: ", j+size
+                print "key error!",u,y," left: ",i," right: ",i+size," top: ",j," bottom: ", j+size
     for key in z.keys():
         print d[key],z[key].max()
     
@@ -59,7 +61,7 @@ def test(featuresfile,img):
     features=np.array(features).astype('float64')
     model,ldict=ml.buildLearners(labels,features)
     g=flipdict(ldict)
-    runtrainingimage(img,80,model[KNN],g)
+    runtrainingimage(img,80,model,g)
     
 
 def flipdict(d):

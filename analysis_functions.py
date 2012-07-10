@@ -5,6 +5,7 @@ from scipy import ndimage
 import mahotas
 import pymorph
 import matplotlib
+from math import sqrt
 
 '''
 makeMarkers:
@@ -34,3 +35,13 @@ def HaralickFeatures(arr):
     return
 
 
+def getGradient(arr):
+    r=arr.shape[0]
+    c=arr.shape[1]
+    o=np.zeros((r,c))
+    for i in xrange(1,r-1):
+        for j in xrange(1,c-1):
+            val1=(arr[i-1][j]-arr[i+1][j])**2
+            val2=(arr[i][j-1]-arr[i][j+1])**2
+            o[i][j]=sqrt(val1+val2)
+    return o
