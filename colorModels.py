@@ -56,42 +56,47 @@ def getDeltaE(model, test, mode='cie2000'):
 	
 def getModelFor(imageArray, mode='lab'):
 	tempImage=numpy.zeros(imageArray.shape)
-	for x in xrange(imageArray.shape[0]):
-		#print("Row: ",x)
-		for y in xrange(imageArray.shape[1]):
-			imageTuple=imageArray[x,y,:]
-			imageTuple=colormath.color_objects.RGBColor(*imageTuple)
-			tempImage[x,y,:]=imageTuple.convert_to(mode).get_value_tuple()
+	if(imageArray.ndim==3):
+		for x in xrange(imageArray.shape[0]):
+			for y in xrange(imageArray.shape[1]):
+				imageTuple=imageArray[x,y,:]
+				imageTuple=colormath.color_objects.RGBColor(*imageTuple)
+				tempImage[x,y,:]=imageTuple.convert_to(mode).get_value_tuple()
+		#get model of converted image
+	else:
+		print"ERROR"
 	model=makeModelOf(tempImage)
 	return model
 
-def makeModelOf(array):
+def makeModelOf(imgArray):
 	model=[]
-	model.append(array[:,:,0].mean())
-	model.append(array[:,:,0].std())
-	model.append(array[:,:,1].mean())
-	model.append(array[:,:,1].std())
-	model.append(array[:,:,2].mean())
-	model.append(array[:,:,2].std())
+	if( imgArray.ndim==2):
+		model.append(imgArray.mean())
+		model.append(imgArray.std())
+	elif(imgArray.ndim==3):
+		for i in range(imgArray.shape[2]):
+			model.append(imgArray[:,:,i].mean())
+			model.append(imgArray[:,:,i].std())
 	return model
 
 def getModelFeatures(imageArrDict):
 	features=[]
 	rgb=imageArrDict[RGB]
-	gray=imageArrDict[grayscale]
+
 	features.extend(getModelFor(rgb,'lab'))
 	features.extend(getModelFor(rgb,'hsv'))
 	features.extend(getModelFor(rgb,'hsl'))
 	features.extend(getModelFor(rgb,'xyz'))
 	features.extend(getModelFor(rgb,'xyy'))
 	features.extend(getModelFor(rgb,'cmy'))
-	'''
-	features.extend(getModelFor(gray,'lab'))
-	features.extend(getModelFor(gray,'hsv'))
-	features.extend(getModelFor(gray,'hsl'))
-	features.extend(getModelFor(gray,'xyz'))
-	features.extend(getModelFor(gray,'xyy'))
-	features.extend(getModelFor(gray,'cmy'))
-	'''
-	features=numpy.array(features);
+
+	#add RGB mean and std
+	features.extend(makeModelOf(rgb))
+
+	#grayscale cannot be converted into other models. just get mean and std	
+	gray=imageArrDict[grayscale]
+	features.extend(makeModelOf(gray))
+	
+	#return as array
+	#features=numpy.array(features);
 	return features
