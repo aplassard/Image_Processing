@@ -71,8 +71,10 @@ def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	C=analyseGradient(dictionary)
 	vector.extend(C)
 	del C
-
-	CM=colorModels.getModelFeatures(dictionary)
+	d={}
+	d[RGB]=dictionary[RGB][top:bottom,left:right,:]
+	d[grayscale]=dictionary[grayscale][top:bottom,left:right]
+	CM=colorModels.getModelFeatures(d)
 	vector.extend(CM)
 
 	return vector
