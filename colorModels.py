@@ -55,13 +55,14 @@ def getDeltaE(model, test, mode='cie2000'):
 	return model.delta_e(test, mode, debug=false)
 	
 def getModelFor(imageArray, mode='lab'):
-	tempImage=numpy.zeros(imageArray.shape)
+	tempImage=numpy.zeros([imageArray.shape[0],imageArray.shape[1],3])
 	if(imageArray.ndim==3):
 		for x in xrange(imageArray.shape[0]):
 			for y in xrange(imageArray.shape[1]):
 				imageTuple=imageArray[x,y,:]
 				imageTuple=colormath.color_objects.RGBColor(*imageTuple)
-				tempImage[x,y,:]=imageTuple.convert_to(mode).get_value_tuple()
+				tmp=imageTuple.convert_to(mode).get_value_tuple()
+				tempImage[x,y,:]=tmp
 		#get model of converted image
 	else:
 		print"ERROR"

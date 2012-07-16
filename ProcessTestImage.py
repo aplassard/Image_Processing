@@ -51,6 +51,6 @@ def runWalk(imgline,size,ML):
             print i,i+size,j,j+size,
             f=np.array(calculatefeatures(imgs,left=i,right=i+size,top=j,bottom=j+size),dtype=float)
             labels = ML.getLabels(f)
-            for i in xrange(len(labels)):
-                print ML.intdict[i],
+            for k in xrange(len(labels)):
+                print ML.intdict[labels[k]],
             

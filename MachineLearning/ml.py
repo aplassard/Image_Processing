@@ -38,7 +38,7 @@ class ml(object):
         self.knn = buildKNN(self.traininglabels,self.trainingfeatures)
         
     def getKNNClass(self,vector):
-        return self.knn.predict(vector)
+        return int(self.knn.predict(vector)[0])
         
     def getSVMClass(self,vector):
         return int(self.svm.predict(vector)[0])
