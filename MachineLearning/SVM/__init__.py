@@ -6,6 +6,7 @@ def buildSVM(traininglabels,trainingfeatures,testlabels,testfeatures):
     model=None
     params=None
     testmodel = svm.LinearSVC(C=0.1)
+    print traininglabels.shape,trainingfeatures.shape
     testmodel.fit(trainingfeatures,traininglabels)
     p=calculateSVMerror(testmodel,testfeatures,testlabels)
 

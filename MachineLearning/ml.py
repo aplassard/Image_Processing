@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import numpy as np
-from ..common import *
+from common import *
 from mlFunctions import *
 from SVM import buildSVM
 from KNN import buildKNN
@@ -33,7 +33,7 @@ class ml(object):
                 self.intdict[n]=traininglabels[i]
                 n+=1
             self.traininglabels[i]=val
-        testfeatures,testlabels,tlabels,tfeatures = splitTrainingTesting(self.trainingfeatures,self.traininglabels)
+        testfeatures,testlabels,tfeatures,tlabels = splitTrainingTesting(self.trainingfeatures,self.traininglabels)
         self.svm = buildSVM(tlabels,tfeatures,testlabels,testfeatures)
         self.knn = buildKNN(self.traininglabels,self.trainingfeatures)
         
@@ -42,5 +42,12 @@ class ml(object):
         
     def getSVMClass(self,vector):
         return int(self.svm.predict(vector)[0])
+        
+    def getLabels(self,vector):
+        labels = []
+        vector = (vector-self.means)/self.stds
+        labels.append(self.getKNNClass(vector))
+        labels.append(self.getSVMClass(vector))
+        return labels
     
     

@@ -41,7 +41,7 @@ def contour(image):
 def normalizeImage(image):
 	im=image
 	imTemp=minFilter(im)
-	imTemp=histNorm(imTemp)
+#	imTemp=histNorm(imTemp)
 	imGray=grayScale(imTemp)
 	d={}
 	imTemp=Imagetoarray(imTemp)

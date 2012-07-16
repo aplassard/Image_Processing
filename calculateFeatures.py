@@ -66,16 +66,18 @@ def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	T=tasfeatures(dictionary[RGB][top:bottom,left:right,BLUE])
 	vector.extend(T)
 	del T
-	C=getColorInfo(dictionary[RGB][top:bottom,left:right])
-	vector.extend(C)
-	C=analyseGradient(dictionary)
-	vector.extend(C)
-	del C
-	d={}
-	d[RGB]=dictionary[RGB][top:bottom,left:right,:]
-	d[grayscale]=dictionary[grayscale][top:bottom,left:right]
-	CM=colorModels.getModelFeatures(d)
-	vector.extend(CM)
-
+#	C=getColorInfo(dictionary[RGB][top:bottom,left:right])
+#	vector.extend(C)
+#	C=analyseGradient(dictionary)
+#	vector.extend(C)
+#	del C
+#	d={}
+#	d[RGB]=dictionary[RGB][top:bottom,left:right,:]
+#	d[grayscale]=dictionary[grayscale][top:bottom,left:right]
+#	CM=colorModels.getModelFeatures(d)
+#	vector.extend(CM)
+	for i in xrange(len(vector)):
+		if vector[i]==NaN:
+			vector[i]=0
 	return vector
 	

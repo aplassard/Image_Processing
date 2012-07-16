@@ -8,10 +8,12 @@ def getimagelists(filename):
     test=[]
     for line in f:
         if line:
-            if len(line.split(tab))==2:
+            if len(line.split(tab))==1:
                 test.append(line)
             elif len(line.split(tab))>2:
                 training.append(line)
+            else:
+                print "Invalid line:",line
                 
     return training,test
 

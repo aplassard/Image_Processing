@@ -2,7 +2,6 @@
 
 import numpy as np
 from collections import namedtuple
-import ml
 from calculateFeatures import calculatefeatures
 from common import *
 import imageTransforms

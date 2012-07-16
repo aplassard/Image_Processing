@@ -4,9 +4,9 @@ from loader import getimagelists
 import processtrainingimage
 from common import *
 import sys
-import ml
+import MachineLearning
 import numpy as np
-import ProcessTest
+import ProcessTestImage
 
 def run(filename):
     print "Reading File"
@@ -29,14 +29,14 @@ def run(filename):
             output+=tab+str(features[i][j])
         o.write(output+'\n')
     print "Converting nested list to array"
-    features=np.array(features)
+    features=np.array(features,dtype=float)
     print "Building Machine Learning Models"
-    model,ldict,m,s=ml.buildLearners(labels,features)
+    model = MachineLearning.ml(features,labels)
     print "Starting Testing Images!"
     for line in test:
         print "Processing file: " + line.split(tab)[0]
         for key in d.keys():
-            ProcessTest.runtrainingimage(line,80,model,ldict,m,s)
+            ProcessTestImage.runWalk(line,80,model)
             
 if __name__ == '__main__':
     run(sys.argv[1])

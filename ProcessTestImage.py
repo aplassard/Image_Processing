@@ -3,8 +3,10 @@
     Code to process test image
 '''
 import numpy as np
-import ImageTransforms
-from commmon import *
+import imageTransforms
+from common import *
+import Image
+from calculateFeatures import calculatefeatures
 
 __author__='Andrew Plassard'
 __version__='1.0'
@@ -28,5 +30,27 @@ def getWalkerParameters(arr,size,factor=4):
     x=xrange(0,s[1],step)
     return x,y,step
 
-def runWalk():
-    pass
+def runWalk(imgline,size,ML):
+    '''
+    Input:
+        The line containing the image
+        The window size
+        the object of type ml
+    
+    Output:
+        A series of arrays of the different subtypes of the image
+    '''
+    line = imgline.strip().split('\t')
+    img = line[0]
+    img = Image.open(img)
+    imgs = imageTransforms.normalizeImage(img)
+    x,y,step=getWalkerParameters(imgs[grayscale],size)
+    for i in x:
+        for j in y:
+            print
+            print i,i+size,j,j+size,
+            f=np.array(calculatefeatures(imgs,left=i,right=i+size,top=j,bottom=j+size),dtype=float)
+            labels = ML.getLabels(f)
+            for i in xrange(len(labels)):
+                print ML.intdict[i],
+            
