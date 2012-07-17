@@ -52,8 +52,14 @@ def testData(data, labels, perc=0.7, K=None):
     buildSVM(trainY, trainX, testY, testX)    
     
 def start(fName, K=None):
+    '''
+    inputFile, number of features to be selected, default is none
+    '''
     X,y= readFile.loadFile(fName)
     testData(X, y, 0.7, K)
 
 if __name__ == '__main__':
+    '''
+    inputFile, number of features to be selected, default is blank
+    '''
     start(sys.argv[1], sys.argv[2])

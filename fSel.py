@@ -20,15 +20,16 @@ def getBestK(X, y, mode='chi2', K=10):
     Outout: Data in 2d numpy array format with top K features selected using the specified
     univariate feature selection method
     '''
-    if K>X.shape[1]:
-	K=X.shape[1]/2
-	
+    K=int(K)
+    if (K>X.shape[1] ):
+	K=(X.shape[1]/2)
+
     if mode=='chi2':
 	Selector=SelectKBest(chi2, K)
 	X_new=Selector.fit_transform(X, y)
     elif mode=='f_classif':
 	Selector= SelectKBest(f_classif, K)
 	X_new= Selector.fit_transform(X, y)
-	
+
     sup=Selector.get_support()
     return X_new

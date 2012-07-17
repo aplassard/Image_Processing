@@ -11,7 +11,7 @@ def buildSVM(traininglabels,trainingfeatures,testlabels,testfeatures):
         testmodel = svm.LinearSVC(C=c)        
         testmodel.fit(trainingfeatures,traininglabels)
         p=calculateSVMerror(testmodel,testfeatures,testlabels)
-        #print "testing LinearSVC with C=", str(c)
+        print "testing LinearSVC with C=", str(c)
         if(p>percent):
             model=testModel
             percent=p
@@ -21,7 +21,7 @@ def buildSVM(traininglabels,trainingfeatures,testlabels,testfeatures):
         testmodel = svm.SVC(C=c)        
         testmodel.fit(trainingfeatures,traininglabels)
         p=calculateSVMerror(testmodel,testfeatures,testlabels)
-        #print "testing SVC with C=", str(c)
+        print "testing SVC with C=", str(c)
         if(p>percent):
             model=testModel
             percent=p
@@ -30,7 +30,7 @@ def buildSVM(traininglabels,trainingfeatures,testlabels,testfeatures):
     setGamma=[0.0001, 0.001, 0.01, 0.1, 1]
     for c in setC:
         for g in setGamma:
-            #print "testing SVC with C= ", str(c), " and gamma=", str(g)
+            print "testing SVC with C= ", str(c), " and gamma=", str(g)
             testmodel = svm.SVC(C=c)        
             testmodel.fit(trainingfeatures,traininglabels)
             p=calculateSVMerror(testmodel,testfeatures,testlabels)
@@ -43,7 +43,7 @@ def buildSVM(traininglabels,trainingfeatures,testlabels,testfeatures):
         testmodel = svm.SVC(C=c, kernel='linear')
         testmodel.fit(trainingfeatures,traininglabels)
         p=calculateSVMerror(testmodel,testfeatures,testlabels)
-        #print "testing SVC linear kernel with C=", str(c)
+        print "testing SVC linear kernel with C=", str(c)
         if(p>percent):
             model=testModel
             percent=p
