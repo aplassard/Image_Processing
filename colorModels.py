@@ -74,7 +74,7 @@ def getModelFeatures(imageArrDict):
 	
 	#return as array
 	#features=numpy.array(features);
-	for i in len(features):
+	for i in xrange(len(features)):
 		if(math.isnan(features[i])):
 			features[i]=0;
 
