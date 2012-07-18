@@ -1,60 +1,26 @@
-import numpy, colormath, colormath.color_objects
+import numpy, colormath, colormath.color_objects, math
 from common import *
 
-'''
-
-takes imageArray, returns imageArray in specified color model
-def rgbToXXX(RGBimageArray, mode='lab'):
-	make array of zeros of the same size as the input image array -> retImageArray
-	for each row
-		for each column
-			get RGB tuple at location x,y in imageArray
-			make RGB ColorObject
-			retImageArray[x,y,:]= RGB tuple converted into XXX tuple
-	return retImage
-
-will convert to:
-'lab'
-'xyz'
-'xyy'
-'rgb'
-'cmy'
-'hsv'
-'hsl'
-
-take imageArray, returns array with mean [L, a, b] for it.
-def getModel(RGBimageArray, mode='lab'):
-	make array of zeros of the same size as the input image array -> tempImageArray
-	for each row
-		for each column
-			get RGB tuple at location x,y in imageArray
-			make RGB ColorObject
-			tempImageArray[x,y,:]= RGB tuple converted into XXX tuple
-	calculate mean of each dimension -> model
-	return model
-
-takes mean [l,a,b] values for modelX(neuron, astrocyte...) and a test imageArray and returns the 
-delta e distance
-def getDeltaE(modelX, test):
-	magic
-
-'''
-
-def rgbTo(imageArray, mode='lab'):
-	#print("model",mode)
-	retImage=numpy.zeros(imageArray.shape)
-	for x in xrange(imageArray.shape[0]):
-		#print("Row: ", x)
-		for y in xrange(imageArray.shape[1]):
-			imageTuple=imageArray[x,y,:]
-			imageTuple=colormath.color_objects.RGBColor(*imageTuple)
-			retImage[x,y,:]=imageTuple.convert_to(mode).get_value_tuple()
-	return retImage
-
 def getDeltaE(model, test, mode='cie2000'):
+	'''
+	Magic
+	'''
 	return model.delta_e(test, mode, debug=false)
 	
 def getModelFor(imageArray, mode='lab'):
+	'''
+	Input: imageArray, coloeModel code,
+	Output: imageArray in specified color model
+	available color models
+	'lab'
+	'xyz'
+	'xyy'
+	'rgb'
+	'cmy'
+	'hsv'
+	'hsl'
+	'''
+
 	tempImage=numpy.zeros([imageArray.shape[0],imageArray.shape[1],3])
 	if(imageArray.ndim==3):
 		for x in xrange(imageArray.shape[0]):
@@ -70,6 +36,10 @@ def getModelFor(imageArray, mode='lab'):
 	return model
 
 def makeModelOf(imgArray):
+	'''
+	Input: imageArray
+	Output: list of mean and median for each channel in imageArray
+	'''
 	model=[]
 	if( imgArray.ndim==2):
 		model.append(imgArray.mean())
@@ -81,6 +51,10 @@ def makeModelOf(imgArray):
 	return model
 
 def getModelFeatures(imageArrDict):
+	'''
+	Input: imageArray
+	Output: models of image in 6 different color models + originals
+	'''
 	features=[]
 	rgb=imageArrDict[RGB]
 
@@ -100,4 +74,8 @@ def getModelFeatures(imageArrDict):
 	
 	#return as array
 	#features=numpy.array(features);
+	for i in xrange(len(features)):
+		if(math.isnan(features[i])):
+			features[i]=0;
+
 	return features
