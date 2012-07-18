@@ -23,7 +23,7 @@ def getZScore(vector):
     m=vector.mean()
     if s>0:
         return (vector-m)/s,m,s
-    else: return vector,m,s
+    else: return vector,m,1
     
 def splitTrainingTesting(arr,labels,percent=0.7):
     l=set(labels)

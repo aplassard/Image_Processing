@@ -45,7 +45,7 @@ def tasfeatures(arr):
 
 def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	vector=[]
-	'''
+
 	H=HaralickFeatures(dictionary[grayscale][top:bottom,left:right])
 	H = flattenHaralick(H)
 	vector.extend(H)
@@ -73,7 +73,7 @@ def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	C=analyseGradient(dictionary)
 	vector.extend(C)
 	del C
-	'''
+
 	d={}
 	d[RGB]=dictionary[RGB][top:bottom,left:right,:]
 	d[grayscale]=dictionary[grayscale][top:bottom,left:right]

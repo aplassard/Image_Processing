@@ -26,10 +26,26 @@ def getWalkerParameters(arr,size,factor=4):
     '''
     s=arr.shape
     step=size/factor
-    y=xrange(0,s[0],step)
-    x=xrange(0,s[1],step)
+    y=xrange(0,s[0]-size,step)
+    x=xrange(0,s[1]-size,step)
     return x,y,step
+            
+def iterRegions(x,y,size,arr):
+    for i in xrange(size):
+        for j in xrange(size):
+            try:
+                arr[i+y,j+x]+=1
+            except:
+                pass
+    return arr
 
+def saveImages(arrdict,keydict,threshold=None):
+    for key in keydict.keys():
+        if threshold==None:
+            savearray(arrdict[key],keydict[key]+'.tif')
+        else:
+            savearray(arrdict[key],keydict[key]+'.'+str(threshold)+'.tif')
+        
 def runWalk(imgline,size,ML):
     '''
     Input:
@@ -44,13 +60,41 @@ def runWalk(imgline,size,ML):
     img = line[0]
     img = Image.open(img)
     imgs = imageTransforms.normalizeImage(img)
-    x,y,step=getWalkerParameters(imgs[grayscale],size)
+    x,y,step=getWalkerParameters(imgs[grayscale],size,factor=8)
+    arraydict = []
+    for key in ML.intdict.keys():
+        arraydict.append(np.zeros_like(imgs[grayscale],dtype=int))
+
     for i in x:
         for j in y:
             print
             print i,i+size,j,j+size,
-            f=np.array(calculatefeatures(imgs,left=i,right=i+size,top=j,bottom=j+size),dtype=float)
-            labels = ML.getLabels(f)
-            for k in xrange(len(labels)):
-                print ML.intdict[labels[k]],
-            
+            try:
+                f=np.array(calculatefeatures(imgs,left=i,right=i+size,top=j,bottom=j+size),dtype=float)
+                labels = ML.getLabels(f)
+                for k in xrange(len(labels)):
+                    print ML.intdict[labels[k]],
+                    arraydict[labels[k]]=iterRegions(i,j,size,arraydict[labels[k]])                            
+            except ValueError:
+                for i in xrange(len(vector)):
+                    print vector[i],
+    print
+    print 'Saving Images'
+    saveImages(arraydict,ML.intdict)
+    nimages=[]
+    for i in xrange(len(arraydict)):
+        t = 20
+        nimages.append(thresholdImage(arraydict[i],imgs[RGB],t))
+    saveImages(nimages,ML.intdict,threshold=t)
+
+def thresholdImage(vals,arr,threshold):
+    for i in xrange(vals.shape[0]):
+        for j in xrange(vals.shape[1]):
+            if vals[i,j]<=threshold:
+                if len(arr.shape)<3:
+                    arr[i,j]=0
+                else:
+                    for k in xrange(arr.shape[2]):
+                        arr[i,j,k]=0
+    return arr
+                    

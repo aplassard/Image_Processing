@@ -35,8 +35,7 @@ def run(filename):
     print "Starting Testing Images!"
     for line in test:
         print "Processing file: " + line.split(tab)[0]
-        for key in d.keys():
-            ProcessTestImage.runWalk(line,80,model)
+        ProcessTestImage.runWalk(line,40,model)
             
 if __name__ == '__main__':
     run(sys.argv[1])

@@ -28,3 +28,5 @@ fftimage='fftimage'
 KNN='KNN'
 Neural='Neural'
 SVM='SVM'
+
+numfeatures=502

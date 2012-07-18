@@ -45,9 +45,9 @@ class ml(object):
         
     def getLabels(self,vector):
         labels = []
-        vector = (vector-self.means)/self.stds
-        labels.append(self.getKNNClass(vector))
-        labels.append(self.getSVMClass(vector))
+        nvector = (vector-self.means)/self.stds
+#        labels.append(self.getKNNClass(nvector))
+        labels.append(self.getSVMClass(nvector))
         return labels
     
     
