@@ -50,7 +50,7 @@ def getMask(data, labels, perc=0.7, K=None):
     #change f_classif to chi2 
     reducedData, mask=getBestK(data,labels, 'f_classif', newK)  
 
-    #return mask
+    return mask
 
 def start(fName, K=None):
     '''
