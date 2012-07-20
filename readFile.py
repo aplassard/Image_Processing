@@ -17,6 +17,13 @@ def loadFile(fileName):
 			classCounter=classCounter+1
 			y.append(d[w[0]])
 	f.close()
+	d=invert(d)
 	X=numpy.array(X, dtype=float)
 	y=numpy.array(y, dtype=float)
-	return X,y
+	return X,y,d
+
+def invert(d):
+	newD={}
+	for k in d.keys():
+		newD[d[k]]=k
+	return newD
