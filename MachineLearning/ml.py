@@ -37,7 +37,7 @@ class ml(object):
         testfeatures,testlabels,tfeatures,tlabels = splitTrainingTesting(self.trainingfeatures,self.traininglabels)
         self.svm = buildSVM(tlabels,tfeatures,testlabels,testfeatures)
         self.knn = buildKNN(self.traininglabels,self.trainingfeatures)
-        self.ann = initialize(self.trainingfeatures,self.traininglabels)
+        self.ann = initialize(self.trainingfeatures,self.traininglabels,p=0.5)
         
     def getKNNClass(self,vector):
         return int(self.knn.predict(vector)[0])
