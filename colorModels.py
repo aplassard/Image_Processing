@@ -6,8 +6,8 @@ def getDeltaE(model, test, mode='cie2000'):
 	Magic
 	'''
 	return model.delta_e(test, mode, debug=false)
-	
-def getModelFor(imageArray, mode='lab'):
+
+def convertTo(imageArray, mode='lab'):
 	'''
 	Input: imageArray, coloeModel code,
 	Output: imageArray in specified color model
@@ -29,9 +29,12 @@ def getModelFor(imageArray, mode='lab'):
 				imageTuple=colormath.color_objects.RGBColor(*imageTuple)
 				tmp=imageTuple.convert_to(mode).get_value_tuple()
 				tempImage[x,y,:]=tmp
-		#get model of converted image
 	else:
 		print"ERROR"
+	return tempImage
+	
+def getModelFor(imageArray, mode='lab'):
+	tempImage=convertTo(imageArray, mode)
 	model=makeModelOf(tempImage)
 	return model
 
