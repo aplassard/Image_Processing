@@ -36,9 +36,9 @@ def getBestK(X, y, mode='chi2', K=10):
     sup=Selector.get_support()
     return X_new,sup
 
-def getMask(data, labels, perc=0.7, K=None):
+def getMask(data, labels, K=None):
     '''
-    Inputs: features, labels, percent for training, number of features desired (optional)
+    Inputs: features, labels, number of features desired (optional)
     Output: performs feature selection and returns boolean mask of useful features
     '''
     #Tree based feature selection to get K
