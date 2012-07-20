@@ -70,9 +70,9 @@ def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	del T
 	C=getColorInfo(dictionary[RGB][top:bottom,left:right])
 	vector.extend(C)
-	C=analyseGradient(dictionary)
-	vector.extend(C)
-	del C
+#	C=analyseGradient(dictionary)
+#	vector.extend(C)
+#	del C
 
 	d={}
 	d[RGB]=dictionary[RGB][top:bottom,left:right,:]

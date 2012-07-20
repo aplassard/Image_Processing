@@ -4,6 +4,7 @@ from common import *
 from mlFunctions import *
 from SVM import buildSVM
 from KNN import buildKNN
+from ANN import initialize
 
 class ml(object):
     '''
@@ -36,6 +37,7 @@ class ml(object):
         testfeatures,testlabels,tfeatures,tlabels = splitTrainingTesting(self.trainingfeatures,self.traininglabels)
         self.svm = buildSVM(tlabels,tfeatures,testlabels,testfeatures)
         self.knn = buildKNN(self.traininglabels,self.trainingfeatures)
+        self.ann = initialize(self.trainingfeatures,self.traininglabels)
         
     def getKNNClass(self,vector):
         return int(self.knn.predict(vector)[0])
@@ -43,11 +45,15 @@ class ml(object):
     def getSVMClass(self,vector):
         return int(self.svm.predict(vector)[0])
         
+    def getANNClass(self,vector):
+        return  int(self.ann.activate(vector).argmax(axis=0))
+        
     def getLabels(self,vector):
         labels = []
         nvector = (vector-self.means)/self.stds
-#        labels.append(self.getKNNClass(nvector))
+        labels.append(self.getKNNClass(nvector))
         labels.append(self.getSVMClass(nvector))
+        labels.append(self.getANNClass(nvector))
         return labels
     
     

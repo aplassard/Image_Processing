@@ -13,7 +13,7 @@ def buildSVM(traininglabels,trainingfeatures,testlabels,testfeatures):
         p=calculateSVMerror(testmodel,testfeatures,testlabels)
         print "testing LinearSVC with C=", str(c)
         if(p>percent):
-            model=testModel
+            model=testmodel
             percent=p
             params="testModel= LinearSVC with C="+str(c)
     
@@ -23,7 +23,7 @@ def buildSVM(traininglabels,trainingfeatures,testlabels,testfeatures):
         p=calculateSVMerror(testmodel,testfeatures,testlabels)
         print "testing SVC with C=", str(c)
         if(p>percent):
-            model=testModel
+            model=testmodel
             percent=p
             params="testModel= SVC with C="+str(c)
 
@@ -35,7 +35,7 @@ def buildSVM(traininglabels,trainingfeatures,testlabels,testfeatures):
             testmodel.fit(trainingfeatures,traininglabels)
             p=calculateSVMerror(testmodel,testfeatures,testlabels)
             if(p>percent):
-                model=testModel
+                model=testmodel
                 percent=p
                 params="testModel= SVC with C= "+str(c)+" gamma= "+str(g)
     
@@ -45,7 +45,7 @@ def buildSVM(traininglabels,trainingfeatures,testlabels,testfeatures):
         p=calculateSVMerror(testmodel,testfeatures,testlabels)
         print "testing SVC linear kernel with C=", str(c)
         if(p>percent):
-            model=testModel
+            model=testmodel
             percent=p
             params="testModel= SVC with kernel = Linear, C="+str(c)
 
