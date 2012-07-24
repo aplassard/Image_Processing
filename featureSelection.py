@@ -57,7 +57,7 @@ def start(fName, K=None):
     inputFile, number of features to be selected, default is none
     '''
     X,y= readFile.loadFile(fName)
-    getMask(X, y, 0.7, K)
+    getMask(X, y, K)
 
 if __name__ == '__main__':
     '''
