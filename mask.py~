@@ -23,7 +23,7 @@ class mask(object):
 		'''
 		l,h=self.labelRanges[labelName]
 		img=colorModels.convertOnFeature(imageArray, self.bestFeatureIndex)
-		mask= (img>h) and (img<l)
+		mask= img > h
 		return mask
 
 	def makeRanges(self, bestCol, labelName):

@@ -47,6 +47,7 @@ def getMask(data, labels, K=None):
         newK=data_new.shape[1]
     else:
         newK=K
+    print "K is : ", newK
     #change f_classif to chi2 
     reducedData, mask=getBestK(data,labels, 'f_classif', newK)  
 

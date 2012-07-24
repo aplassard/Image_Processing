@@ -50,9 +50,47 @@ def makeModelOf(imgArray):
 	elif(imgArray.ndim==3):
 		for i in range(imgArray.shape[2]):
 			model.append(imgArray[:,:,i].mean())
-			model.append(imgArray[:,:,i].std())
+			#model.append(imgArray[:,:,i].std())
 	return model
 
+def convertOnFeature(imageArr, fIndex):
+	if fIndex>= 0 and fIndex<=2 :
+		mode='lab'
+
+	elif fIndex>= 3 and fIndex<=5 :
+		mode='hsv'
+
+	elif fIndex>= 6 and fIndex<=8 :
+		mode='hsl'
+
+	elif fIndex>= 9 and fIndex<=11 :
+		mode='xyz'
+
+	elif fIndex>= 12 and fIndex<=14 :
+		mode='xyy'
+
+	elif fIndex>= 15 and fIndex<=17 :
+		mode='cmy'
+
+	elif fIndex>= 18 and fIndex<=20 :
+		#keep in RGB
+		pass
+
+	elif fIndex>= 21 and fIndex<=23 :
+		retImage=toGrayscale(imageArr)
+
+ 	channel=fIndex%3
+	print "using mode ", mode , "and channel ", channel
+	retImage=convertTo(imageArr, mode)
+	retImage=retImage[:,:,channel]
+	print "returning image of shape:", retImage.shape
+	return retImage
+
+def toGraysale(imageArr):
+	for x in xrange(len(imageArr.shape[0])):
+		for y in xrange(len(imageArr[1])):
+			retImage=numpy.sum(imageArr[x,y,:])/3
+	return retImage
 def getModelFeatures(imageArrDict):
 	'''
 	Input: imageArray
