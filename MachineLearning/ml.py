@@ -36,8 +36,8 @@ class ml(object):
             self.traininglabels[i]=val
         testfeatures,testlabels,tfeatures,tlabels = splitTrainingTesting(self.trainingfeatures,self.traininglabels)
         self.svm = buildSVM(tlabels,tfeatures,testlabels,testfeatures)
-        self.knn = buildKNN(self.traininglabels,self.trainingfeatures)
-        self.ann = initialize(self.trainingfeatures,self.traininglabels,p=0.5)
+#        self.knn = buildKNN(self.traininglabels,self.trainingfeatures)
+#        self.ann = initialize(self.trainingfeatures,self.traininglabels,p=0.5)
         
     def getKNNClass(self,vector):
         return int(self.knn.predict(vector)[0])
@@ -51,9 +51,9 @@ class ml(object):
     def getLabels(self,vector):
         labels = []
         nvector = (vector-self.means)/self.stds
-        labels.append(self.getKNNClass(nvector))
+#        labels.append(self.getKNNClass(nvector))
         labels.append(self.getSVMClass(nvector))
-        labels.append(self.getANNClass(nvector))
+#        labels.append(self.getANNClass(nvector))
         return labels
     
     

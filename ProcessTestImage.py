@@ -7,6 +7,7 @@ import imageTransforms
 from common import *
 import Image
 from calculateFeatures import calculatefeatures
+from scipy.ndimage import watershed_ift
 
 __author__='Andrew Plassard'
 __version__='1.0'
@@ -82,10 +83,21 @@ def runWalk(imgline,size,ML):
     print 'Saving Images'
     saveImages(arraydict,ML.intdict)
     nimages=[]
-    for i in xrange(len(arraydict)):
-        t = 20
-        nimages.append(thresholdImage(arraydict[i],imgs[RGB],t))
-    saveImages(nimages,ML.intdict,threshold=t)
+    for j in xrange(25):
+        for i in xrange(len(arraydict)):
+            t = j
+            nimages.append(thresholdImage(arraydict[i],imgs[RGB],t))
+        saveImages(nimages,ML.intdict,threshold=t)
+    print 'Finding Local Maxima'
+    markers = getLocalMaxima(arraydict[0])
+    print 'Running Watershed'
+    watersheded = runWatershed(markers,imgs[grayscale])
+    savearray(watersheded,'watersheded_image.tif')
+    
+def runWatershed(markers,arr):
+	res = watershed_ift(arr,markers)
+	
+    
 
 def thresholdImage(vals,arr,threshold):
     for i in xrange(vals.shape[0]):
@@ -97,4 +109,34 @@ def thresholdImage(vals,arr,threshold):
                     for k in xrange(arr.shape[2]):
                         arr[i,j,k]=0
     return arr
-                    
+    
+def getLocalMaxima(arr,size):
+	'''
+	Input:
+		2D numpy array
+	Output:
+		2D numpy array of local maxima
+		
+	Usage:
+		 >>> marray = getLocalMaxima(arr)
+	'''	
+	marray = np.zeros_like(arr,dtype=int)
+	for i in xrange(size,arr.shape[0]-1,size):
+		for j in xrange(size,arr.shape[1]-1,size):
+			val = arr[i,j]
+			print val,max([arr[i-1,j-1],arr[i-1,j],arr[i-1,j+1],arr[i,j+1],arr[i+1,j+1],arr[i,j-1],arr[i+1,j],arr[i+1,j-1],1])
+			if val >= max([arr[i-1,j-1],arr[i-1,j],arr[i-1,j+1],arr[i,j+1],arr[i+1,j+1],arr[i,j-1],arr[i+1,j],arr[i+1,j-1],1]):
+				marray[i,j]=1
+	return marray
+			
+			
+def localMax(imageArray):
+	maxX=imageArray.shape[0]
+	maxY=imageArray.shape[1]
+	indexX=0
+	indexY=0
+	p=imageArray.argmax()
+	while( p>= maxY):
+		indexX=indexX+1
+		p=p%maxY
+	indexY=p
