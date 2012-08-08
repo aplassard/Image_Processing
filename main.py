@@ -7,12 +7,14 @@ import sys
 import MachineLearning
 import numpy as np
 import ProcessTestImage
+from readFile import loadFile
 
 def run(filename):
     print "Reading File"
     training,test=getimagelists(filename)
     features=[]
     labels=[]
+    '''
     d={}
     for line in training:
         print "Processing file: " + line.split(tab)[0]
@@ -30,6 +32,9 @@ def run(filename):
         o.write(output+'\n')
     print "Converting nested list to array"
     features=np.array(features,dtype=float)
+    '''
+    features, labels= loadFile("output.txt")
+    
     print "Building Machine Learning Models"
     model = MachineLearning.ml(features,labels)
     print "Starting Testing Images!"

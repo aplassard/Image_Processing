@@ -5,6 +5,7 @@ from mlFunctions import *
 from SVM import buildSVM
 from KNN import buildKNN
 from ANN import initialize
+import mask
 
 class ml(object):
     '''
@@ -21,7 +22,7 @@ class ml(object):
             
         Initializes class of type ml.  Builds multiple machine learning modules.
         '''
-        self.trainingfeatures,self.means,self.stds=normalizearray(trainingfeatures)
+        
         self.labeldict={}
         self.intdict={}
         self.traininglabels = np.zeros_like(traininglabels,dtype=int)
@@ -34,6 +35,14 @@ class ml(object):
                 self.intdict[n]=traininglabels[i]
                 n+=1
             self.traininglabels[i]=val
+
+        colorFeatures=trainingfeatures[:,-23:];
+        print "labeldict: ", self.labeldict
+        print"-------\ninverted dict: ", self.intdict
+        self.maskGen= mask.mask(colorFeatures, self.traininglabels, self.intdict)
+
+        self.trainingfeatures,self.means,self.stds=normalizearray(trainingfeatures)
+
         testfeatures,testlabels,tfeatures,tlabels = splitTrainingTesting(self.trainingfeatures,self.traininglabels)
         self.svm = buildSVM(tlabels,tfeatures,testlabels,testfeatures)
 #        self.knn = buildKNN(self.traininglabels,self.trainingfeatures)
@@ -55,5 +64,3 @@ class ml(object):
         labels.append(self.getSVMClass(nvector))
 #        labels.append(self.getANNClass(nvector))
         return labels
-    
-    

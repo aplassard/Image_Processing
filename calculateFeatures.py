@@ -2,7 +2,7 @@ from numpy import *
 from common import *
 import mahotas
 from basicInfo import getColorInfo,analyseGradient
-import colorModels
+from FeatureCalculator import colorModels
 import math
 #takes in an image array. color or grayscale. for each channel in the array it 
 # calculates the mean and std dev, and returns it in a list
@@ -45,6 +45,7 @@ def tasfeatures(arr):
 
 def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	vector=[]
+	
 	H=HaralickFeatures(dictionary[grayscale][top:bottom,left:right])
 	H = flattenHaralick(H)
 	vector.extend(H)
@@ -67,9 +68,10 @@ def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	T=tasfeatures(dictionary[RGB][top:bottom,left:right,BLUE])
 	vector.extend(T)
 	del T
-	C=getColorInfo(dictionary[RGB][top:bottom,left:right])
-	vector.extend(C)
 	C=analyseGradient(dictionary)
+	vector.extend(C)
+	del C
+	C=getColorInfo(dictionary[RGB][top:bottom,left:right])
 	vector.extend(C)
 	del C
 	
@@ -78,6 +80,7 @@ def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	d[grayscale]=dictionary[grayscale][top:bottom,left:right]
 	CM=colorModels.getModelFeatures(d)
 	vector.extend(CM)
+	
 	for i in xrange(len(vector)):
 		if math.isnan(vector[i])==True:
 			vector[i]=0.0

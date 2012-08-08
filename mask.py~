@@ -1,29 +1,44 @@
 import featureSelection, numpy, colorModels
 
 class mask(object):
-	def __init__(self):
-		pass
-
-	def loadTrainData(self,colorFeatures, labels):
+	def __init__(self,colorFeatures, labels, labelDict):
 		'''
-		Input: Color model features, and labels
+		Input: Color model features, labels, and an integer-label-> character-label dict
 		Objective: Compute best feature for thresholding and threshold range for each label
 		'''
-		bestFeatureData, mask=featureSelection.getMask(colorFeatures, labels, 1)
+		mask=featureSelection.getMask(colorFeatures, labels, 1)
 		for i in xrange(0,len(mask)):
 			if mask[i]==True:
 				break
+		print mask
 		self.bestFeatureIndex=i
-		self.labelRanges=self.makeRanges(bestFeatureData, labels)
+		print "Best feature index: ", self.bestFeatureIndex
+		self.labelRanges=self.makeRanges(colorFeatures[:,i], labels)
+		print "ranges ", self.labelRanges
+		self.labelDict=labelDict
+		print "Inverted Dict: ", self.labelDict
 
-	def thresholdOn(self, imageArray,labelName):
+	def getMask(self, imageArray,label):
 		'''
 		Input: image array to be thresholded, and name of label you want to threshold out
 		Output: binary image array
 		'''
-		l,h=self.labelRanges[labelName]
+		#find ID of label
+		labelID=label
+
+		print "found label: ", labelID
+
+		#get range for ID
+		l,h=self.labelRanges[labelID]
+
+		#get image, convert to best colormodel based on self.bestFeatureIndex
 		img=colorModels.convertOnFeature(imageArray, self.bestFeatureIndex)
-		mask= img > h
+
+		print "using thresholds ", l, h
+		t1= (img>h)
+		t2=(img>l)
+		mask=(t1==t2)
+		mask=numpy.array(mask, dtype=int)
 		return mask
 
 	def makeRanges(self, bestCol, labelName):
@@ -45,7 +60,5 @@ class mask(object):
 		for k in d.keys():
 			x=numpy.array(d[k])
 			m=x.mean()
-			s=x.std()
-			ranges[k]=[m-s, m+s]
-
+			ranges[k]=[m*0.95, m*1.05]
 		return ranges

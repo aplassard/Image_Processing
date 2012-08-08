@@ -28,6 +28,7 @@ def process(line,d):
         d[featurecoordinates[j][5]]=m
     for j in xrange(len(featurecoordinates)):
         newfeature=runtraininganalysis(images[RGB],featurecoordinates[j])
+	print "Box ", j
         if newfeature:
             for i in xrange(len(newfeature)):
                 features.append(newfeature[i])

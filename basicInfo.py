@@ -9,9 +9,9 @@ def getColorInfo(imageArray):
 	for channel in xrange(imageArray.shape[2]):
 		im=imageArray[:,:,channel]
 		m=mean(im)
-		s=std(im)
+		#s=std(im)
 		colorList.append(m)
-		colorList.append(s)
+		#colorList.append(s)
 	return colorList
 
 # takes in an image 3d array. returns ratio of longer axis length/ smaller 

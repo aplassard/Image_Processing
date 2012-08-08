@@ -1,3 +1,2 @@
-image1.tif	ffi	image1.brainmatter.tif	image1.neuron.tif	image1.vacuole.tif	image1.astrocyte.tif
-image2.tif	ffi	image2.brainmatter.tif	image2.neuron.tif	image2.vacuole.tif	image2.astrocyte.tif
+image1.tif	ffi	image1.background.tif	image1.neuron.tif
 image3.tif

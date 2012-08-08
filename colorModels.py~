@@ -20,6 +20,12 @@ def convertTo(imageArray, mode='lab'):
 	'hsv'
 	'hsl'
 	'''
+	if(mode == 'rgb' ):
+		return imageArray
+	if(mode == 'grayscale' ):
+		retImage=imageArray[:,:,0]+imageArray[:,:,1]+imageArray[:,:,2]
+		retImage=retImage/3
+		return retImage
 
 	tempImage=numpy.zeros([imageArray.shape[0],imageArray.shape[1],3])
 	if(imageArray.ndim==3):
@@ -46,45 +52,12 @@ def makeModelOf(imgArray):
 	model=[]
 	if( imgArray.ndim==2):
 		model.append(imgArray.mean())
-		model.append(imgArray.std())
+		#model.append(imgArray.std())
 	elif(imgArray.ndim==3):
 		for i in range(imgArray.shape[2]):
 			model.append(imgArray[:,:,i].mean())
 			#model.append(imgArray[:,:,i].std())
 	return model
-
-def convertOnFeature(imageArr, fIndex):
-	if fIndex>= 0 and fIndex<=2 :
-		mode='lab'
-
-	elif fIndex>= 3 and fIndex<=5 :
-		mode='hsv'
-
-	elif fIndex>= 6 and fIndex<=8 :
-		mode='hsl'
-
-	elif fIndex>= 9 and fIndex<=11 :
-		mode='xyz'
-
-	elif fIndex>= 12 and fIndex<=14 :
-		mode='xyy'
-
-	elif fIndex>= 15 and fIndex<=17 :
-		mode='xyz'
-
-	elif fIndex>= 18 and fIndex<=20 :
-		#keep in RGB
-		pass
-
-	elif fIndex>= 21 and fIndex<=23 :
-		retImage=toGrayscale(imageArr)
-
- 	channel=fIndex%3
-	print "using mode ", mode , "and channel ", channel
-	retImage=convertTo(imageArr, mode)
-	retImage=retImage[:,:,channel]
-	print "returning image of shape:", retImage.shape
-	return retImage
 
 def toGraysale(imageArr):
 	for x in xrange(len(imageArr.shape[0])):
