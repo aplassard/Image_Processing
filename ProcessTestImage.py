@@ -23,7 +23,7 @@ def getWalkerParameters(arr,size,factor=1.5):
     Output: xrange of x steps
             xrange of y steps
             step size
-            
+
     Example:
     >>> xvals,yvals,step = getWalkerParameters(imagearay,80)
     '''
@@ -32,7 +32,7 @@ def getWalkerParameters(arr,size,factor=1.5):
     y=xrange(0,s[0]-size,step)
     x=xrange(0,s[1]-size,step)
     return x,y,step
-            
+
 def iterRegions(x,y,size,arr):
     for i in xrange(size):
         for j in xrange(size):
@@ -42,13 +42,13 @@ def iterRegions(x,y,size,arr):
                 pass
     return arr
 
-        
+
 def runWalk(imgline,size,ML):
     '''
     Input:
         The line containing the image
         The window size
-        the object of type ml       
+        the object of type ml
     Output:
         A series of arrays of the different subtypes of the image
     '''
@@ -82,7 +82,7 @@ def runWalk(imgline,size,ML):
 	    #if subregion has enough 1's in it, the go ahead, else do nothing
 	    if(percentFilled>=fillThreshold):
 		try:
-		    f=np.array(calculatefeatures(imgs,left=i,right=i+size,top=j,bottom=j+size),dtype=float)
+		    f=np.array(calculatefeatures(imgs,left=i,right=i+size,top=j+size,bottom=j),dtype=float)
 		    labels = ML.getLabels(f)
 		    for k in xrange(len(labels)):
 			print ML.intdict[labels[k]],
@@ -93,7 +93,7 @@ def runWalk(imgline,size,ML):
             else:
                 print "skipping"
     saveImages(nimages,ML.intdict,threshold=t)
-    
+
     print 'Finding Local Maxima'
     markers = getSeeds(imageMask)
     print 'Running Watershed'
@@ -101,7 +101,7 @@ def runWalk(imgline,size,ML):
     print watersheded.shape
     imsave('watersheded_image.tif', watersheded)
     '''
-    
+
 def saveImages(arrdict,keydict,threshold=None):
     print arrdict
     for key in keydict.keys():
@@ -128,7 +128,7 @@ def thresholdImage(vals,arr,threshold):
                         arr[i,j,k]=0
     return arr
 
-			
+
 def getSeeds(imageArray):
     Ximage=np.zeros_like(imageArray)
     Yimage=np.zeros_like(imageArray)
@@ -142,7 +142,7 @@ def getSeeds(imageArray):
 		lineToggle=False
 		middle=(float(startY+y))/2
 		Yimage[x, middle]=1
-		
+
     for y in xrange(imageArray.shape[1]):
 	lineToggle=False
 	for x in xrange(imageArray.shape[0]):
@@ -160,7 +160,7 @@ def getSeeds(imageArray):
 	for x in xrange(imageArray.shape[0]):
 	    if(centers[x,y]==1):
 		centers[x,y]=counter
-		counter+=1	
+		counter+=1
     imsave("centers.tiff", centers)
-    
+
     return centers
