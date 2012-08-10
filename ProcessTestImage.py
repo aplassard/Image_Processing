@@ -10,6 +10,9 @@ from calculateFeatures import calculatefeatures
 from scipy.ndimage import watershed_ift
 import pylab
 from scipy.misc import imsave
+import analysis_functions
+from scipy.stats import mode
+from ImageClass import ImageClass
 
 __author__='Andrew Plassard'
 __version__='1.0'
@@ -25,7 +28,7 @@ def getWalkerParameters(arr,size,factor=1.5):
             step size
 
     Example:
-    >>> xvals,yvals,step = getWalkerParameters(imagearay,80)
+    >>> xvals,yvals,step = getWalkerParameters(imagearray,80)
     '''
     s=arr.shape
     step=size/factor
@@ -77,17 +80,17 @@ def runWalk(imgline,size,ML):
             print
             print i,i+size,j,j+size,
             subMask=imageMask[j:j+size, i:i+size]
-	    subMask=float(subMask.sum())
-	    percentFilled=subMask/(size*size)
-	    #if subregion has enough 1's in it, the go ahead, else do nothing
-	    if(percentFilled>=fillThreshold):
-		try:
-		    f=np.array(calculatefeatures(imgs,left=i,right=i+size,top=j+size,bottom=j),dtype=float)
-		    labels = ML.getLabels(f)
-		    for k in xrange(len(labels)):
-			print ML.intdict[labels[k]],
-			arraydict[labels[k]]=iterRegions(i,j,size,arraydict[labels[k]])
-		except ValueError:
+        subMask=float(subMask.sum())
+        percentFilled=subMask/(size*size)
+        #if subregion has enough 1's in it, the go ahead, else do nothing
+        if(percentFilled>=fillThreshold):
+        try:
+            f=np.array(calculatefeatures(imgs,left=i,right=i+size,top=j+size,bottom=j),dtype=float)
+            labels = ML.getLabels(f)
+            for k in xrange(len(labels)):
+            print ML.intdict[labels[k]],
+            arraydict[labels[k]]=iterRegions(i,j,size,arraydict[labels[k]])
+        except ValueError:
                     for i in xrange(len(vector)):
                         print vector[i],
             else:
@@ -101,14 +104,37 @@ def runWalk(imgline,size,ML):
     print watersheded.shape
     imsave('watersheded_image.tif', watersheded)
     '''
+    savearray(imgs['grayscale'],'grayscale.tif')
+    gradient = analysis_functions.getGradient(imgs['grayscale'])
+    savearray(gradient,'gradient.tif')
+    savearray(imgs[originalgrayscale],'original_grayscale.tif')
+
+    print
+    segments = {}
+    for key in imageMasks.keys():
+        x = imageMasks[key]
+        gx = gradient*x
+        s=getSeeds(x)
+        print 'Running Watershed on Gradient'
+        print
+        rw = runWatershed(s,gx)
+        savearray(rw,ML.intdict[key]+'_watershed_on_gradient.tif')
+        segments[key]=rw
+        
+    l = {}
+    for key in segments.keys():
+        l[key] = getImageClass(segments[key],imgs)
+    
+    for key in l.keys():
+        l[key].toFile(ML.intdict[key]+'_features')
+    
 
 def saveImages(arrdict,keydict,threshold=None):
-    print arrdict
     for key in keydict.keys():
-	if threshold==None:
-	    savearray(arrdict[key],keydict[key]+'.tif')
-	else:
-	    savearray(arrdict[key],keydict[key]+'.'+str(threshold)+'.tif')
+        if threshold==None:
+            savearray(arrdict[key],keydict[key]+'.tif')
+        else:
+            savearray(arrdict[key],keydict[key]+'.'+str(threshold)+'.tif')
 
 def runWatershed(markers,arr):
     arr=np.logical_not(arr)
@@ -130,37 +156,97 @@ def thresholdImage(vals,arr,threshold):
 
 
 def getSeeds(imageArray):
-    Ximage=np.zeros_like(imageArray)
-    Yimage=np.zeros_like(imageArray)
+    Ximage=np.zeros_like(imageArray,dtype=int)
+    Yimage=np.zeros_like(imageArray,dtype=int)
     for x in xrange(imageArray.shape[0]):
-	lineToggle=False
-	for y in xrange(imageArray.shape[1]):
-	    if(imageArray[x,y]==1 and lineToggle==False):
-		lineToggle=True
-		startY=y
-	    elif(imageArray[x,y]==0 and lineToggle==True):
-		lineToggle=False
-		middle=(float(startY+y))/2
-		Yimage[x, middle]=1
+        lineToggle=False
+        for y in xrange(imageArray.shape[1]):
+            if(imageArray[x,y]==1 and lineToggle==False):
+                lineToggle=True
+                startY=y
+            elif(imageArray[x,y]==0 and lineToggle==True):
+                lineToggle=False
+                middle=(float(startY+y))/2
+                Yimage[x, middle]=1
+        if(lineToggle):
+            lineToggle=False
+            middle=(float(startY+y))/2
+            Yimage[x, middle]=1
 
     for y in xrange(imageArray.shape[1]):
-	lineToggle=False
-	for x in xrange(imageArray.shape[0]):
-	    if(imageArray[x,y]==1 and lineToggle==False):
-		lineToggle=True
-		startX=x
-	    elif(imageArray[x,y]==0 and lineToggle==True):
-		lineToggle=False
-		middle=(float(startX+x))/2
-		Ximage[middle, y]=1
+        lineToggle=False
+        for x in xrange(imageArray.shape[0]):
+            if(imageArray[x,y]==1 and lineToggle==False):
+                lineToggle=True
+                startX=x
+            elif(imageArray[x,y]==0 and lineToggle==True):
+                lineToggle=False
+                middle=(float(startX+x))/2
+                Ximage[middle, y]=1
+        if (lineToggle):
+            lineToggle=False
+            middle=(float(startX+x))/2
+            Ximage[middle, y]=1
+            
     centers=Ximage*Yimage
     imsave("centers-binary.tiff", centers)
     counter=0
     for y in xrange(imageArray.shape[1]):
-	for x in xrange(imageArray.shape[0]):
-	    if(centers[x,y]==1):
-		centers[x,y]=counter
-		counter+=1
+        for x in xrange(imageArray.shape[0]):
+            if(centers[x,y]==1):
+                centers[x,y]=counter
+                counter+=1
     imsave("centers.tiff", centers)
 
     return centers
+
+def removeWatershedJunk(arr,minsize=None):
+    arr = arr.astype(int)
+    m = arr.max()
+    v = m+1
+
+    if minsize==None:
+        minsize = (arr.shape[0]*arr.shape[1])/200
+    n=m+1
+    print 'Removing Junk with size less than: ' + str(minsize)
+    print 'There are', n, 'objects in total'
+    print
+    t = n*.05
+    z = t
+    num=0
+    for i in xrange(0,n):
+        if i > t:
+            print 'Finished: ' + str(t*100/n) + '% of filtering.  ' + str(num) +' have been Removed out of ' +str(i)+'.'
+            t+=z
+        c = sum(sum((arr==i).astype(int)))
+        if c < minsize:
+            num+=1
+            tmp = (arr==i).astype(int)*(v)
+            arr = arr*(arr!=i).astype(bool)
+            arr+=tmp
+    
+    print
+    print 'In total, ' + str(num) + ' objects were removed out of ' + str(m)
+    return arr
+    
+def getImageClass(w,imgs,size=8):
+    x,y,step = getWalkerParameters(w,size,factor=1)
+    p = .9*size*size
+    z=mode(w.ravel())[0][0]
+    IC = ImageClass()
+    for j in x:
+        for i in y:
+            try:
+                img = w[i:i+step,j:j+step]
+                m = mode(img.ravel())
+                c=m[1][0]
+                m=m[0][0]
+                if c > p and m!=z:
+                    print i,i+step,j,j+step,m,c,p
+                    IC.addVector(int(m),calculatefeatures(imgs,left=j,right=j+step,top=i+step,bottom=i))
+                else:
+                    print i,i+step,j,j+step,"skipped",m,c,p
+            except:
+                print i,i+step,j,j+step,"failed"
+    return IC
+    

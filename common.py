@@ -28,5 +28,6 @@ fftimage='fftimage'
 KNN='KNN'
 Neural='Neural'
 SVM='SVM'
-
+originalRGB='originalRGB'
+originalgrayscale='originalgrayscale'
 numfeatures=502

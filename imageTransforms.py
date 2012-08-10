@@ -48,4 +48,6 @@ def normalizeImage(image):
 	imGray=Imagetoarray(imGray)
 	d[RGB]=imTemp
 	d[grayscale]=imGray
+	d[originalRGB]=im
+	d[originalgrayscale]=Imagetoarray(grayScale(im))
 	return d

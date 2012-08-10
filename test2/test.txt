@@ -1,2 +1,2 @@
 train.tif	lowgradeglioma	train.background.tif	train.astrocyte.tif
-test (copy).tif
+smalltest.tif

@@ -79,5 +79,5 @@ class mask(object):
 			x=numpy.array(d[k])
 			m=x.mean()
 			s=x.std()
-			ranges[k]=[m-(4*s), m+(4*s)]
+			ranges[k]=[m-(4*s), m+(1*s)]
 		return ranges

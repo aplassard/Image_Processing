@@ -2,7 +2,7 @@ from numpy import *
 from common import *
 import mahotas
 from basicInfo import getColorInfo,analyseGradient
-import colorModels
+from FeatureCalculator import colorModels
 import math
 #takes in an image array. color or grayscale. for each channel in the array it 
 # calculates the mean and std dev, and returns it in a list
@@ -45,39 +45,48 @@ def tasfeatures(arr):
 
 def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	vector=[]
-	'''
+<<<<<<< HEAD
+	H=HaralickFeatures(dictionary[grayscale][bottom:top,left:right])
+=======
+	
 	H=HaralickFeatures(dictionary[grayscale][top:bottom,left:right])
+>>>>>>> 3e413a9875780d08adcc4e3013611987376bee2b
 	H = flattenHaralick(H)
 	vector.extend(H)
-	H=HaralickFeatures(dictionary[RGB][top:bottom,left:right,GREEN])
+	H=HaralickFeatures(dictionary[RGB][bottom:top,left:right,GREEN])
 	H = flattenHaralick(H)
 	vector.extend(H)
-	H=HaralickFeatures(dictionary[RGB][top:bottom,left:right,RED])
+	H=HaralickFeatures(dictionary[RGB][bottom:top,left:right,RED])
 	H = flattenHaralick(H)
 	vector.extend(H)
-	H=HaralickFeatures(dictionary[RGB][top:bottom,left:right,BLUE])
+	H=HaralickFeatures(dictionary[RGB][bottom:top,left:right,BLUE])
 	H = flattenHaralick(H)
 	vector.extend(H)
 	del H
-	T=tasfeatures(dictionary[grayscale][top:bottom,left:right])
+	T=tasfeatures(dictionary[grayscale][bottom:top,left:right])
 	vector.extend(T)
-	T=tasfeatures(dictionary[RGB][top:bottom,left:right,GREEN])
+	T=tasfeatures(dictionary[RGB][bottom:top,left:right,GREEN])
 	vector.extend(T)
-	T=tasfeatures(dictionary[RGB][top:bottom,left:right,RED])
+	T=tasfeatures(dictionary[RGB][bottom:top,left:right,RED])
 	vector.extend(T)
-	T=tasfeatures(dictionary[RGB][top:bottom,left:right,BLUE])
+	T=tasfeatures(dictionary[RGB][bottom:top,left:right,BLUE])
 	vector.extend(T)
 	del T
+<<<<<<< HEAD
+	C=getColorInfo(dictionary[RGB][bottom:top,left:right])
+	vector.extend(C)
+=======
+>>>>>>> 3e413a9875780d08adcc4e3013611987376bee2b
 	C=analyseGradient(dictionary)
 	vector.extend(C)
 	del C
 	C=getColorInfo(dictionary[RGB][top:bottom,left:right])
 	vector.extend(C)
 	del C
-	'''
+	
 	d={}
-	d[RGB]=dictionary[RGB][top:bottom,left:right,:]
-	d[grayscale]=dictionary[grayscale][top:bottom,left:right]
+	d[RGB]=dictionary[RGB][bottom:top,left:right,:]
+	d[grayscale]=dictionary[grayscale][bottom:top,left:right]
 	CM=colorModels.getModelFeatures(d)
 	vector.extend(CM)
 	

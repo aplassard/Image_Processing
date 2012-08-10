@@ -36,9 +36,11 @@ def HaralickFeatures(arr):
 
 
 def getGradient(arr):
+    sqrt(0)
+    arr=arr.astype(float)
     r=arr.shape[0]
     c=arr.shape[1]
-    o=np.zeros((r,c))
+    o=np.zeros((r,c),dtype=float)
     for i in xrange(1,r-1):
         for j in xrange(1,c-1):
             val1=(arr[i-1][j]-arr[i+1][j])**2
