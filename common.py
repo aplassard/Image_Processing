@@ -16,6 +16,7 @@ def Imagetoarray(img):
     return np.array(img)
     
 def getImageAsArray(path):
+    print path
     return np.array(imread(path).astype(float))
     
 def savearray(arr,path):

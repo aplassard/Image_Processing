@@ -48,10 +48,10 @@ def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	H=HaralickFeatures(dictionary[grayscale][bottom:top,left:right])
 	H = flattenHaralick(H)
 	vector.extend(H)
-	H=HaralickFeatures(dictionary[originalgrayscale][bottom:top,left:right])
-	H = flattenHaralick(H)
-	vector.extend(H)
-	'''
+#	H=HaralickFeatures(dictionary[originalgrayscale][bottom:top,left:right])
+#	H = flattenHaralick(H)
+#	vector.extend(H)
+	
 	H=HaralickFeatures(dictionary[RGB][bottom:top,left:right,GREEN])
 	H = flattenHaralick(H)
 	vector.extend(H)
@@ -79,13 +79,11 @@ def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	C=getColorInfo(dictionary[RGB][top:bottom,left:right])
 	vector.extend(C)
 	del C
-	
 	d={}
 	d[RGB]=dictionary[RGB][bottom:top,left:right,:]
 	d[grayscale]=dictionary[grayscale][bottom:top,left:right]
 	CM=colorModels.getModelFeatures(d)
 	vector.extend(CM)
-	'''
 	for i in xrange(len(vector)):
 		if math.isnan(vector[i])==True:
 			vector[i]=0.0

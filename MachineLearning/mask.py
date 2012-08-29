@@ -1,5 +1,7 @@
 from FeatureCalculator import featureSelection, colorModels
 import numpy, pylab
+from morph import morph
+from sklearn.lda import LDA
 
 class mask(object):
 	def __init__(self,colorFeatures, labels, labelDict):
@@ -12,10 +14,14 @@ class mask(object):
 			if mask[i]==True:
 				break
 		print mask
+		
 		self.bestFeatureIndex=i
 		print "Best feature index: ", self.bestFeatureIndex
 		print "best data ", colorFeatures[:,i]
+		
+		self.makeLDA(colorFeatures[:, [i,i]], labels)
 		self.labelRanges=self.makeRanges(colorFeatures[:,i], labels)
+		
 		print "ranges ", self.labelRanges
 		self.labelDict=labelDict
 		print "Inverted Dict: ", self.labelDict
@@ -30,35 +36,58 @@ class mask(object):
 		img=colorModels.convertOnFeature(imageArray, self.bestFeatureIndex)
 		return img
 		
-	def getMaskHelper(self, convertedImg,label):
+	def getMaskHelper(self, convertedImg,label, mode='LDA'):
 		
 		'''
-		Input: image array to be thresholded, and name of label you want to threshold out
+		Input: image array to be thresholded, and name of label you want to threshold out, type of thresholding
 		Output: binary image array
 		'''
 		#find ID of label
 		labelID=label
 
 		print "found label: ", labelID
-
-		#get range for ID
-		l,h=self.labelRanges[labelID]
-
-
-		print "using thresholds ", l, h
-		t1= (convertedImg<h)
-		t2=(convertedImg>l)
-		mask=(t1*t2)		
-		mask=numpy.array(mask, dtype=int)
+		
+		if(mode!='LDA'):
+			#get range for ID
+			l,h=self.labelRanges[labelID]	
+			print "using thresholds ", l, h
+			t1= (convertedImg<h)
+			t2=(convertedImg>l)
+			mask=(t1*t2)		
+			mask=numpy.array(mask, dtype=int)
+		else:
+			mask=(convertedImg==labelID).astype(int)
 		return mask
-
-	def getAllMasks(self, imageArray):		
+	
+	def prepLDAMask(self, img):
+		'''
+		Input: Image array
+		Output: mask with pixels labeled with what they are predicted to be by Linear Disctiminant Analysis
+		'''
+		allMask=numpy.zeros_like(img)
+		for x in xrange(img.shape[0]):
+			for y in xrange(img.shape[1]):
+				allMask[x,y]=self.clf.predict([[img[x,y]]]).astype(int)
+		
+		return allMask
+				
+	def getAllMasks(self, imageArray, mode='LDA'):
 		img=self.convertToModel(imageArray)
+		if mode=='LDA':
+			img=self.prepLDAMask(img)
+		print img
 		maskDict={}
 		for key in self.labelRanges.keys():
-			maskDict[key]=self.getMaskHelper(img, key)			
+			tempMask=self.getMaskHelper(img, key, mode)
+			#tempMask=morph(tempMask)
+			#tempMask=morph(tempMask, 3,'d')
+			maskDict[key]=tempMask
 		return maskDict
 	
+	def makeLDA(self,data, labels):
+		self.clf=LDA()
+		self.clf.fit(data, labels)
+		
 	def makeRanges(self, bestCol, labelName):
 		'''
 		Input: single column of values to threshold on, and labels
@@ -79,5 +108,5 @@ class mask(object):
 			x=numpy.array(d[k])
 			m=x.mean()
 			s=x.std()
-			ranges[k]=[m-(4*s), m+(1*s)]
+			ranges[k]=[m-(2*s), m+(2*s)]
 		return ranges

@@ -1,2 +1,0 @@
-image1.tif	ffi	image1.background.tif	image1.neuron.tif
-image3.tif

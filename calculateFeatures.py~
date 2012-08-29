@@ -45,14 +45,13 @@ def tasfeatures(arr):
 
 def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	vector=[]
-<<<<<<< HEAD
 	H=HaralickFeatures(dictionary[grayscale][bottom:top,left:right])
-=======
-	
-	H=HaralickFeatures(dictionary[grayscale][top:bottom,left:right])
->>>>>>> 3e413a9875780d08adcc4e3013611987376bee2b
 	H = flattenHaralick(H)
 	vector.extend(H)
+	H=HaralickFeatures(dictionary[originalgrayscale][bottom:top,left:right])
+	H = flattenHaralick(H)
+	vector.extend(H)
+	'''
 	H=HaralickFeatures(dictionary[RGB][bottom:top,left:right,GREEN])
 	H = flattenHaralick(H)
 	vector.extend(H)
@@ -72,11 +71,8 @@ def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	T=tasfeatures(dictionary[RGB][bottom:top,left:right,BLUE])
 	vector.extend(T)
 	del T
-<<<<<<< HEAD
 	C=getColorInfo(dictionary[RGB][bottom:top,left:right])
 	vector.extend(C)
-=======
->>>>>>> 3e413a9875780d08adcc4e3013611987376bee2b
 	C=analyseGradient(dictionary)
 	vector.extend(C)
 	del C
@@ -89,7 +85,7 @@ def calculatefeatures(dictionary,left=None,right=None,top=None,bottom=None):
 	d[grayscale]=dictionary[grayscale][bottom:top,left:right]
 	CM=colorModels.getModelFeatures(d)
 	vector.extend(CM)
-	
+	'''
 	for i in xrange(len(vector)):
 		if math.isnan(vector[i])==True:
 			vector[i]=0.0

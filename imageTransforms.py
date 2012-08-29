@@ -7,7 +7,7 @@ import ImageFilter
 from common import *
 
 def histNorm(image):
-	im2=ImageOps.equalize(image)
+	im2=ImageOps.autocontrast(image)
 	return im2
 
 def smooth(image):
@@ -40,8 +40,9 @@ def contour(image):
 
 def normalizeImage(image):
 	im=image
-	imTemp=minFilter(im)
-#	imTemp=histNorm(imTemp)
+	imTemp=im
+	imTemp=minFilter(imTemp)
+	imTemp=histNorm(imTemp)
 	imGray=grayScale(imTemp)
 	d={}
 	imTemp=Imagetoarray(imTemp)
@@ -49,5 +50,4 @@ def normalizeImage(image):
 	d[RGB]=imTemp
 	d[grayscale]=imGray
 	d[originalRGB]=im
-	d[originalgrayscale]=Imagetoarray(grayScale(im))
 	return d

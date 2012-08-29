@@ -66,13 +66,10 @@ def runWalk(imgline,size,ML):
     for key in ML.intdict.keys():
         arraydict.append(np.zeros_like(imgs[grayscale],dtype=int))
         temp=ML.intdict[key]
-        f= temp.find('background')
-        if f>-1:
-            bgIndex=key
 
-    #make binary image mask by thresholding on background
+    #make binary image mask by thresholding for each object label (neuron, astrocyte, ...)
     tempColorImg=imgs['RGB']
-    imageMasks=ML.maskGen.getAllMasks(tempColorImg)
+    imageMasks=ML.maskGen.getAllMasks(tempColorImg, 'LDA')
     saveImages(imageMasks, ML.intdict)
     '''
     for i in x:
@@ -96,7 +93,7 @@ def runWalk(imgline,size,ML):
             else:
                 print "skipping"
     saveImages(nimages,ML.intdict,threshold=t)
-
+    
     print 'Finding Local Maxima'
     markers = getSeeds(imageMask)
     print 'Running Watershed'
@@ -107,27 +104,42 @@ def runWalk(imgline,size,ML):
     savearray(imgs['grayscale'],'grayscale.tif')
     gradient = analysis_functions.getGradient(imgs['grayscale'])
     savearray(gradient,'gradient.tif')
-    savearray(imgs[originalgrayscale],'original_grayscale.tif')
 
     print
+    #running watershed on GRADIENT images for all objects/ masks
     segments = {}
     for key in imageMasks.keys():
+	x = imageMasks[key]
+	gx = gradient*x
+	s, sb=getSeeds(x)
+	print 'Running Watershed on Gradient'
+
+	rwGradient = runWatershed(s,gx)
+	#savearray(sb, ML.intdict[key]+"centersBinary-Grad.tiff")
+	#savearray(s, ML.intdict[key]+"centers-Grad.tiff")
+	savearray(rwGradient,ML.intdict[key]+'_watershed_on_gradient.tif')
+	segments[key]=rwGradient
+
+    #running watershed on GRAYSCALE images for all objects/ masks
+    for key in imageMasks.keys():
         x = imageMasks[key]
-        gx = gradient*x
-        s=getSeeds(x)
-        print 'Running Watershed on Gradient'
-        print
-        rw = runWatershed(s,gx)
-        savearray(rw,ML.intdict[key]+'_watershed_on_gradient.tif')
-        segments[key]=rw
-        
+        gx = imgs['grayscale']*x
+        s, sb=getSeeds(x)
+        print 'Running Watershed on Grayscale'        
+        rwGray = runWatershed(s,gx)
+	#savearray(sb, ML.intdict[key]+"centersBinary-GrayScale.tiff")
+	#savearray(s, ML.intdict[key]+"centers-GrayScale.tiff")
+        savearray(rwGray,ML.intdict[key]+'_watershed_on_grayscale.tif')
+        segments[key]=rwGray
+
+    '''
     l = {}
     for key in segments.keys():
         l[key] = getImageClass(segments[key],imgs)
     
     for key in l.keys():
         l[key].toFile(ML.intdict[key]+'_features')
-    
+    '''
 
 def saveImages(arrdict,keydict,threshold=None):
     for key in keydict.keys():
@@ -189,16 +201,15 @@ def getSeeds(imageArray):
             Ximage[middle, y]=1
             
     centers=Ximage*Yimage
-    imsave("centers-binary.tiff", centers)
+    centersBinary=Ximage*Yimage
     counter=0
     for y in xrange(imageArray.shape[1]):
         for x in xrange(imageArray.shape[0]):
             if(centers[x,y]==1):
                 centers[x,y]=counter
                 counter+=1
-    imsave("centers.tiff", centers)
 
-    return centers
+    return centers, centersBinary
 
 def removeWatershedJunk(arr,minsize=None):
     arr = arr.astype(int)

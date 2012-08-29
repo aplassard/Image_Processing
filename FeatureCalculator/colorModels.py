@@ -70,12 +70,14 @@ def convertOnFeature(imageArr, fIndex):
 
 	elif fIndex>= 21 and fIndex<=23 :
 		mode='grayscale'
-		retImage=toGrayscale(imageArr)
+		#retImage=toGrayscale(imageArr)
+		channel=0
 
- 	channel=fIndex%3
+	channel=fIndex%3
 	print "using mode ", mode , "and channel ", channel
 	retImage=convertTo(imageArr, mode)
-	retImage=retImage[:,:,channel]
+	if(mode!='grayscale'):
+		retImage=retImage[:,:,channel]
 	print "returning image of shape:", retImage.shape
 	return retImage
 
@@ -94,11 +96,12 @@ def makeModelOf(imgArray):
 			#model.append(imgArray[:,:,i].std())
 	return model
 
-def toGraysale(imageArr):
-	for x in xrange(len(imageArr.shape[0])):
-		for y in xrange(len(imageArr[1])):
+def toGrayscale(imageArr):
+	for x in xrange(imageArr.shape[0]):
+		for y in xrange(imageArr.shape[1]):
 			retImage=numpy.sum(imageArr[x,y,:])/3
 	return retImage
+
 def getModelFeatures(imageArrDict):
 	'''
 	Input: imageArray

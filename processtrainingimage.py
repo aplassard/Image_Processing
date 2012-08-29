@@ -10,7 +10,7 @@ from calculateFeatures import calculatefeatures
 def process(line,d):
     line = line.strip().split(tab)
     sample=line[1]
-    image=line[0]
+    image=line[0].replace(" ","")
     featureimages=line[2:]
     img=Image.open(image)
     images=imageTransforms.normalizeImage(img) #Arjun's thing

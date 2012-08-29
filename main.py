@@ -14,7 +14,7 @@ def run(filename):
     training,test=getimagelists(filename)
     features=[]
     labels=[]
-    '''
+    
     d={}
     for line in training:
         print "Processing file: " + line.split(tab)[0]
@@ -34,7 +34,7 @@ def run(filename):
     features=np.array(features,dtype=float)
     '''
     features, labels= loadFile("output.txt")
-    
+    '''
     print "Building Machine Learning Models"
     model = MachineLearning.ml(features,labels)
     print "Starting Testing Images!"
